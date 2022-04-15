@@ -32,7 +32,8 @@
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [
-      "eslint --fix",
+      "yarn lint",
+      "yarn format",
       "git add"
     ]
   }
