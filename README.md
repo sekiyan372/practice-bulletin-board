@@ -1,4 +1,4 @@
-# yuwaku-photocon-admin
+# yuwaku-admin
 
 湯涌のフォトコンテストの管理者用ページ
 
