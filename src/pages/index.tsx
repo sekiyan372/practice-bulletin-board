@@ -1,5 +1,7 @@
 import type { NextPage } from 'next'
 
+const a = 'a'
+
 const Home: NextPage = () => {
   return (
     <>
