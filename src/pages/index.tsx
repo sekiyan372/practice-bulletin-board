@@ -10,12 +10,12 @@ import { isEnv } from '~/utils'
 const Home: NextPage = () => {
   const [photocons, setPhotocons] = useState<Photocon[]>([])
   useEffect(() => {
-    ;async () => {
+    const getData = async () => {
       if (!firestore) return
       await getDocs(
         collection(
           firestore,
-          isEnv ? 'photocon_production' : 'photocon_development'
+          isEnv() ? 'photocon_production' : 'photocon_development'
         )
       ).then((res: QuerySnapshot) => {
         const distList: Photocon[] = []
@@ -32,6 +32,7 @@ const Home: NextPage = () => {
         setPhotocons(distList)
       })
     }
+    getData()
   }, [])
 
   return (
