@@ -1,10 +1,12 @@
+import { Box, Heading, Skeleton } from '@chakra-ui/react'
 import type { NextPage } from 'next'
 import { useEffect } from 'react'
 
+import { AlertHealthCheckFailed } from '~/components/Alert'
 import useFetchPhotocons from '~/hooks/useFetchPhotocons'
 
 const Home: NextPage = () => {
-  const [photocons, getPhotocons] = useFetchPhotocons()
+  const [photocons, getPhotocons, { loading, error }] = useFetchPhotocons()
 
   useEffect(() => {
     getPhotocons()
@@ -12,12 +14,15 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <h1>トップページ</h1>
-      <div>
-        {photocons.map((photocon) => (
-          <div key={photocon.id}>{photocon.name}</div>
-        ))}
-      </div>
+      <AlertHealthCheckFailed error={error} />
+      <Heading>トップページ</Heading>
+      <Box>
+        <Skeleton isLoaded={!loading}>
+          {photocons.map((photocon) => (
+            <Box key={photocon.id}>{photocon.name}</Box>
+          ))}
+        </Skeleton>
+      </Box>
     </>
   )
 }

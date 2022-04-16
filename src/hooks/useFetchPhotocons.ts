@@ -6,13 +6,21 @@ import { firestore } from '~/database/firebase'
 import type { Photocon } from '~/types'
 import { isEnv } from '~/utils'
 
-export type UseFetchPhotoconsType = [Photocon[], () => Promise<void>]
+export type UseFetchPhotoconsType = [
+  Photocon[],
+  () => Promise<void>,
+  { loading: boolean; error: Error | undefined }
+]
 
 const useFetchPhotocons = (): UseFetchPhotoconsType => {
   const [photocons, setPhotocons] = useState<Photocon[]>([])
+  const [loading, setLoading] = useState<boolean>(false)
+  const [error, setError] = useState<Error | undefined>(undefined)
 
   const getPhotocons = useCallback(async () => {
     if (!firestore) return
+
+    setLoading(true)
     await getDocs(
       collection(
         firestore,
@@ -34,11 +42,13 @@ const useFetchPhotocons = (): UseFetchPhotoconsType => {
         setPhotocons(distList)
       })
       .catch((e) => {
+        setError(e)
         throw e
       })
+      .finally(() => setLoading(false))
   }, [])
 
-  return [photocons, getPhotocons]
+  return [photocons, getPhotocons, { loading, error }]
 }
 
 export default useFetchPhotocons
