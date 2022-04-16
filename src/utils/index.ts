@@ -1,0 +1,1 @@
+export { isEnv } from './env'
