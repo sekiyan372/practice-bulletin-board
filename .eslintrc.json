@@ -1,5 +1,30 @@
 {
   "extends": [
-    "next/core-web-vitals"
-  ]
+    "eslint:recommended",
+    "@typescript-eslint/eslint-plugin",
+    "@typescript-eslint/recommended",
+    "next",
+    "next/core-web-vitals",
+    "prettier",
+    "prettier/@typescript-eslint"
+  ],
+  "rules": {
+    "arrow-spacing": "error",
+    "prefer-arrow-callback": "error",
+    "prefer-const": "error",
+    "@typescript-eslint/no-unused-vars": ["error", { "varsIgnorePattern": "^_", "argsIgnorePattern": "^_"}],
+    "simple-import-sort/imports": "error",
+    "react/self-closing-comp": "error",
+    "react/jsx-curly-brace-presence": "error",
+    "react/jsx-pascal-case": "error"
+  },
+  "plugins": ["eslint-plugin-simple-import-sort"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "env": {
+    "browser": true,
+    "es2021": true
+  }
 }
