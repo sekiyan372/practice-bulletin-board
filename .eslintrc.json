@@ -12,7 +12,10 @@
     "arrow-spacing": "error",
     "prefer-arrow-callback": "error",
     "prefer-const": "error",
-    "@typescript-eslint/no-unused-vars": ["error", { "varsIgnorePattern": "^_", "argsIgnorePattern": "^_"}],
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { "varsIgnorePattern": "^_", "argsIgnorePattern": "^_" }
+    ],
     "simple-import-sort/imports": "error",
     "react/self-closing-comp": "error",
     "react/jsx-curly-brace-presence": "error",
