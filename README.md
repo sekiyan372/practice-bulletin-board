@@ -3,6 +3,7 @@
 湯涌のフォトコンテストの管理者用ページ
 
 # Version
+
 - node: v16.13.1
 
 ## Getting Started
@@ -22,7 +23,7 @@ $ yarn dev
 
 ```bash
 # コードチェック
-$ yarn lint
+$ yarn lint:fix
 # コードフォーマット
-$ yarn format
+$ yarn format:fix
 ```
