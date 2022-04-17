@@ -19,6 +19,11 @@ $ yarn dev
 
 サーバー起動後 [http://localhost:3000](http://localhost:3000) にブラウザでアクセスする。
 
+### Environment variable setting
+
+`.env.local` ファイルをプロジェクトのルートディレクトリに作成して、環境変数を以下からコピペして設定する。
+https://docs.google.com/document/d/1Q-f2ymSP8VmTLnIhGypeyHcyqXLPMNf3GBYiWvzog5Q/edit
+
 ## Learn More
 
 ```bash
