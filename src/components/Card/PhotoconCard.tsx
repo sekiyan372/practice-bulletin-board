@@ -19,6 +19,11 @@ export const PhotoconCard: FC<Props> = ({ photocon, index }) => {
         alt="Picture of photo contest"
         height={160}
         onClick={onOpen}
+        _hover={{
+          cursor: 'pointer',
+          boxShadow: '0 6px 14px rgba(0, 0, 0, 0.24)',
+          transform: 'translate(0, -4px)',
+        }}
       />
       <Text fontSize="30px" fontWeight="bold" color="gray.600">
         {index}
