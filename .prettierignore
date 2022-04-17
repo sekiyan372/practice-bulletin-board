@@ -2,6 +2,7 @@ node_modules
 dist
 /.next/
 /out/
+public
 yarn.lock
 .eslintignore
 .prettierignore
