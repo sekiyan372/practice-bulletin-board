@@ -17,10 +17,10 @@ export const PhotoconCard: FC<Props> = ({ photocon, index }) => {
       <Image
         src={photocon.image}
         alt="Picture of photo contest"
-        height={200}
+        height={160}
         onClick={onOpen}
       />
-      <Text fontSize="30px" fontWeight="bold">
+      <Text fontSize="30px" fontWeight="bold" color="gray.600">
         {index}
       </Text>
 

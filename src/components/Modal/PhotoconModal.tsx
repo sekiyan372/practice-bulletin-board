@@ -20,7 +20,7 @@ type Props = {
 
 export const PhotoconModal: FC<Props> = ({ photocon, isOpen, onClose }) => {
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="4xl">
+    <Modal size="5xl" isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
         <ModalCloseButton />
@@ -29,7 +29,7 @@ export const PhotoconModal: FC<Props> = ({ photocon, isOpen, onClose }) => {
             <Image
               src={photocon.image}
               alt="Picture of photo contest"
-              height={400}
+              height={480}
               mx="auto"
             />
             <Text fontSize="20px" fontWeight="bold" color="gray.800" py="10px">

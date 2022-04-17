@@ -16,7 +16,7 @@ const Home: NextPage = () => {
   return (
     <>
       <AlertHealthCheckFailed error={error} />
-      <Heading textAlign="center" m="50px">
+      <Heading textAlign="center" m="50px" color="gray.800">
         応募作品一覧
       </Heading>
       <Box>
