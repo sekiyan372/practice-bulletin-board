@@ -1,36 +1,26 @@
-import { Box, Flex, Heading, Skeleton } from '@chakra-ui/react'
+import { Box, Heading, List, ListIcon, ListItem } from '@chakra-ui/react'
 import type { NextPage } from 'next'
-import { useEffect } from 'react'
-
-import { AlertHealthCheckFailed } from '~/components/Alert'
-import { PhotoconCard } from '~/components/Card'
-import useFetchPhotocons from '~/hooks/useFetchPhotocons'
+import Link from 'next/link'
+import { FaAward } from 'react-icons/fa'
+import { MdPhotoAlbum } from 'react-icons/md'
 
 const Home: NextPage = () => {
-  const [photocons, getPhotocons, { loading, error }] = useFetchPhotocons()
-
-  useEffect(() => {
-    getPhotocons()
-  }, [getPhotocons])
-
   return (
     <>
-      <AlertHealthCheckFailed error={error} />
       <Heading textAlign="center" m="50px" color="gray.800">
-        応募作品一覧
+        撮っテク！管理ページ
       </Heading>
-      <Box>
-        <Skeleton isLoaded={!loading}>
-          <Flex flexWrap="wrap" justifyContent="center">
-            {photocons.map((photocon, index) => (
-              <PhotoconCard
-                key={photocon.id}
-                photocon={photocon}
-                index={index + 1}
-              />
-            ))}
-          </Flex>
-        </Skeleton>
+      <Box textAlign="center">
+        <List spacing={3}>
+          <ListItem>
+            <ListIcon as={MdPhotoAlbum} />
+            <Link href="/album">アルバム管理</Link>
+          </ListItem>
+          <ListItem>
+            <ListIcon as={FaAward} />
+            <Link href="/contest">フォトコンテスト管理</Link>
+          </ListItem>
+        </List>
       </Box>
     </>
   )
