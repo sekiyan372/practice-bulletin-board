@@ -11,7 +11,9 @@ import {
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import type { FC } from 'react'
+import { FaAward, FaHome } from 'react-icons/fa'
 import { GiHamburgerMenu } from 'react-icons/gi'
+import { MdPhotoAlbum } from 'react-icons/md'
 
 export const Header: FC = () => {
   return (
@@ -49,13 +51,13 @@ export const Header: FC = () => {
           display={{ base: 'flex', lg: 'none' }}
         />
         <MenuList color="black">
-          <MenuItem>
+          <MenuItem icon={<FaHome />}>
             <NextLink href="/">ホーム</NextLink>
           </MenuItem>
-          <MenuItem>
+          <MenuItem icon={<MdPhotoAlbum />}>
             <NextLink href="/album">アルバム</NextLink>
           </MenuItem>
-          <MenuItem>
+          <MenuItem icon={<FaAward />}>
             <NextLink href="/contest">フォトコンテスト</NextLink>
           </MenuItem>
         </MenuList>
