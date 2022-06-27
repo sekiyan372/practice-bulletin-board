@@ -2,6 +2,7 @@ import {
   Box,
   Flex,
   Heading,
+  Icon,
   IconButton,
   Menu,
   MenuButton,
@@ -32,12 +33,15 @@ export const Header: FC = () => {
       <Spacer />
       <Box gap="2" display={{ base: 'none', lg: 'block' }}>
         <Box display="inline-block" px="10">
+          <Icon as={FaHome} />
           <NextLink href="/">ホーム</NextLink>
         </Box>
         <Box display="inline-block" px="10">
+          <Icon as={MdPhotoAlbum} />
           <NextLink href="/album">アルバム</NextLink>
         </Box>
         <Box display="inline-block" px="10">
+          <Icon as={FaAward} />
           <NextLink href="/contest">フォトコンテスト</NextLink>
         </Box>
       </Box>
@@ -51,15 +55,15 @@ export const Header: FC = () => {
           display={{ base: 'flex', lg: 'none' }}
         />
         <MenuList color="black">
-          <MenuItem icon={<FaHome />}>
-            <NextLink href="/">ホーム</NextLink>
-          </MenuItem>
-          <MenuItem icon={<MdPhotoAlbum />}>
-            <NextLink href="/album">アルバム</NextLink>
-          </MenuItem>
-          <MenuItem icon={<FaAward />}>
-            <NextLink href="/contest">フォトコンテスト</NextLink>
-          </MenuItem>
+          <NextLink href="/" passHref>
+            <MenuItem icon={<FaHome />}>ホーム</MenuItem>
+          </NextLink>
+          <NextLink href="/album" passHref>
+            <MenuItem icon={<MdPhotoAlbum />}>アルバム</MenuItem>
+          </NextLink>
+          <NextLink href="/contest" passHref>
+            <MenuItem icon={<FaAward />}>フォトコンテスト</MenuItem>
+          </NextLink>
         </MenuList>
       </Menu>
     </Flex>

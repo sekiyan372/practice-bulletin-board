@@ -14,7 +14,7 @@ const Album: NextPage = () => {
       <Heading textAlign="center" m="50px" color="gray.800">
         アルバム管理
       </Heading>
-      <Tabs variant="enclosed">
+      <Tabs variant="enclosed" px="50" pb="10">
         <TabList>
           <Tab>未公開</Tab>
           <Tab>公開</Tab>
