@@ -4,14 +4,14 @@ import { useEffect } from 'react'
 
 import { AlertHealthCheckFailed } from '~/components/Alert'
 import { PhotoconCard } from '~/components/Card'
-import useFetchPhotocons from '~/hooks/useFetchPhotocons'
+import { useFetchContest } from '~/hooks/useFetchContest'
 
 const Contest: NextPage = () => {
-  const [photocons, getPhotocons, { loading, error }] = useFetchPhotocons()
+  const [data, getData, { loading, error }] = useFetchContest()
 
   useEffect(() => {
-    getPhotocons()
-  }, [getPhotocons])
+    getData()
+  }, [getData])
 
   return (
     <>
@@ -22,10 +22,10 @@ const Contest: NextPage = () => {
       <Box>
         <Skeleton isLoaded={!loading}>
           <Flex flexWrap="wrap" justifyContent="center">
-            {photocons.map((photocon, index) => (
+            {data.map((contest, index) => (
               <PhotoconCard
-                key={photocon.id}
-                photocon={photocon}
+                key={contest.id}
+                contest={contest}
                 index={index + 1}
               />
             ))}
