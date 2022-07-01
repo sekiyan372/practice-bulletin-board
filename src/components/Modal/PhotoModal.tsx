@@ -9,20 +9,30 @@ import {
   ModalContent,
   ModalOverlay,
   Text,
+  useDisclosure,
 } from '@chakra-ui/react'
-import { FC } from 'react'
+import { FC, useState } from 'react'
 
+import { ConfirmDialog } from '~/components/Modal'
 import type { Album } from '~/types'
 
 type Props = {
   content: Album
-  isOpen: boolean
-  onClose: () => void
+  modalState: boolean
+  handleClose: () => void
 }
 
-export const PhotoModal: FC<Props> = ({ content, isOpen, onClose }) => {
+export const PhotoModal: FC<Props> = ({ content, modalState, handleClose }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [nextStatus, setNextStatus] = useState<Album['status']>(content.status)
+
+  const handleClick = (state: Album['status']) => {
+    setNextStatus(state)
+    onOpen()
+  }
+
   return (
-    <Modal size="5xl" isOpen={isOpen} onClose={onClose}>
+    <Modal size="5xl" isOpen={modalState} onClose={handleClose}>
       <ModalOverlay />
       <ModalContent>
         <ModalCloseButton />
@@ -45,13 +55,28 @@ export const PhotoModal: FC<Props> = ({ content, isOpen, onClose }) => {
             </Text>
             {content.status === 'private' && (
               <ButtonGroup>
-                <Button colorScheme="green">公開</Button>
-                <Button colorScheme="red">ブロック</Button>
+                <Button
+                  colorScheme="green"
+                  onClick={() => handleClick('public')}
+                >
+                  公開
+                </Button>
+                <Button colorScheme="red" onClick={() => handleClick('block')}>
+                  ブロック
+                </Button>
               </ButtonGroup>
             )}
             {(content.status === 'public' || content.status === 'block') && (
-              <Button colorScheme="blue">非公開</Button>
+              <Button colorScheme="blue" onClick={() => handleClick('private')}>
+                非公開
+              </Button>
             )}
+
+            <ConfirmDialog
+              nextStatus={nextStatus}
+              modalState={isOpen}
+              handleClose={onClose}
+            />
           </Box>
         </ModalBody>
       </ModalContent>
