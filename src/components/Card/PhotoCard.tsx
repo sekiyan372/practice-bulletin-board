@@ -20,6 +20,11 @@ export const PhotoCard: FC<Props> = ({ content }) => {
       p="10px"
       backgroundColor="gray.100"
       color="gray.800"
+      _hover={{
+        cursor: 'pointer',
+        boxShadow: '0 6px 14px rgba(0, 0, 0, 0.24)',
+        transform: 'translate(0, -4px)',
+      }}
     >
       <Image
         src={content.imageUrl}
