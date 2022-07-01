@@ -14,6 +14,7 @@ export const albumConverter = (): FirestoreDataConverter<Album> => ({
       imageUrl: value.imageUrl,
       name: value.name,
       comment: value.comment,
+      status: value.status,
       createdAt: serverTimestamp,
       updatedAt: serverTimestamp,
     }
@@ -25,6 +26,7 @@ export const albumConverter = (): FirestoreDataConverter<Album> => ({
       imageUrl: data.imageUrl,
       name: data.name,
       comment: data.comment,
+      status: data.status,
       createdAt: data.createdAt.toDate(),
       updatedAt: data.updatedAt.toDate(),
     }

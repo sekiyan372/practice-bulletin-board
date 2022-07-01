@@ -11,6 +11,7 @@ export type Album = {
   imageUrl: string
   name: string
   comment: string
+  status: 'public' | 'private' | 'block'
   createdAt: Date
   updatedAt: Date
 }
