@@ -1,5 +1,5 @@
-import type { QuerySnapshot } from 'firebase/firestore'
-import { collection, getDocs } from 'firebase/firestore'
+import type { CollectionReference, QuerySnapshot } from 'firebase/firestore'
+import { collection, getDocs, orderBy, query } from 'firebase/firestore'
 import { useCallback, useState } from 'react'
 
 import { firestore } from '~/database/firebase'
@@ -22,11 +22,12 @@ export const useFetchAlbum = (): UseFetchDataType => {
 
     setLoading(true)
     try {
+      const albumRef: CollectionReference<Album> = collection(
+        firestore,
+        isEnv() ? 'album_production' : 'album_development'
+      ).withConverter(albumConverter())
       const response: QuerySnapshot<Album> = await getDocs(
-        collection(
-          firestore,
-          isEnv() ? 'album_production' : 'album_development'
-        ).withConverter(albumConverter())
+        query(albumRef, orderBy('createdAt', 'desc'))
       )
       const album: Album[] = response.docs.map((doc) => doc.data())
       setData(album)

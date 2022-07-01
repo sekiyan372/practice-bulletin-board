@@ -102,7 +102,7 @@ export const PhotoModal: FC<Props> = ({ content, modalState, handleClose }) => {
                   colorScheme="blue"
                   width={{ base: '240px', sm: '320px' }}
                 >
-                  非公開
+                  未公開
                 </Button>
               )}
             </Box>

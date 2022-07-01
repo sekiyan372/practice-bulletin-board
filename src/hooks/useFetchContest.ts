@@ -1,5 +1,5 @@
-import type { QuerySnapshot } from 'firebase/firestore'
-import { collection, getDocs } from 'firebase/firestore'
+import type { CollectionReference, QuerySnapshot } from 'firebase/firestore'
+import { collection, getDocs, query } from 'firebase/firestore'
 import { useCallback, useState } from 'react'
 
 import { firestore } from '~/database/firebase'
@@ -22,12 +22,11 @@ export const useFetchContest = (): UseFetchDataType => {
 
     setLoading(true)
     try {
-      const response: QuerySnapshot<Contest> = await getDocs(
-        collection(
-          firestore,
-          isEnv() ? 'photocon_production' : 'photocon_development'
-        ).withConverter(contestConverter())
-      )
+      const contestRef: CollectionReference<Contest> = collection(
+        firestore,
+        isEnv() ? 'photocon_production' : 'photocon_development'
+      ).withConverter(contestConverter())
+      const response: QuerySnapshot<Contest> = await getDocs(query(contestRef))
       const contest: Contest[] = response.docs.map((doc) => doc.data())
       setData(contest)
     } catch (error) {
