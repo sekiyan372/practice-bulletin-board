@@ -1,7 +1,7 @@
+// eslint-disable-next-line simple-import-sort/imports
 import {
   Box,
   Button,
-  ButtonGroup,
   Image,
   Modal,
   ModalBody,
@@ -9,9 +9,12 @@ import {
   ModalContent,
   ModalOverlay,
   Text,
+  Heading,
   useDisclosure,
+  Stack,
 } from '@chakra-ui/react'
-import { FC, useState } from 'react'
+import dayjs from 'dayjs'
+import { FC, useState, useCallback } from 'react'
 
 import { ConfirmDialog } from '~/components/Modal'
 import type { Album } from '~/types'
@@ -26,10 +29,13 @@ export const PhotoModal: FC<Props> = ({ content, modalState, handleClose }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [nextStatus, setNextStatus] = useState<Album['status']>(content.status)
 
-  const handleClick = (state: Album['status']) => {
-    setNextStatus(state)
-    onOpen()
-  }
+  const handleClick = useCallback(
+    (state: Album['status']) => {
+      setNextStatus(state)
+      onOpen()
+    },
+    [setNextStatus, onOpen]
+  )
 
   return (
     <Modal size="5xl" isOpen={modalState} onClose={handleClose}>
@@ -37,45 +43,75 @@ export const PhotoModal: FC<Props> = ({ content, modalState, handleClose }) => {
       <ModalContent>
         <ModalCloseButton />
         <ModalBody>
-          <Box textAlign="center" pt="50px">
+          <Box color="gray.800">
             <Image
               src={content.imageUrl}
               alt="Picture of photo contest"
-              height={480}
+              height={600}
               mx="auto"
+              my="10"
             />
-            <Text fontSize="20px" fontWeight="bold" color="gray.800" py="10px">
-              {content.name}
-            </Text>
-            <Text fontSize="20px" fontWeight="bold" color="gray.800" py="10px">
-              {content.comment}
-            </Text>
-            <Text fontSize="16px" color="gray.600" pb="10px">
-              {content.createdAt.toString()}
-            </Text>
-            {content.status === 'private' && (
-              <ButtonGroup>
-                <Button
-                  colorScheme="green"
-                  onClick={() => handleClick('public')}
+
+            <Stack
+              direction="column"
+              px={{ base: 2, sm: 10, md: 20, lg: 40 }}
+              spacing="2"
+            >
+              <Box py="2">
+                <Heading fontSize="xl">投稿者</Heading>
+                <Text color="gray.800">{content.name}</Text>
+              </Box>
+              <Box py="2">
+                <Heading fontSize="xl">コメント</Heading>
+                <Text color="gray.800">{content.comment}</Text>
+              </Box>
+              <Box py="2">
+                <Heading fontSize="xl">投稿日時</Heading>
+                <Text color="gray.600">
+                  {dayjs(content.createdAt).format('YYYY/MM/DD HH:mm:ss')}
+                </Text>
+              </Box>
+            </Stack>
+
+            <Box textAlign="center" py="10">
+              {content.status === 'private' && (
+                <Stack
+                  direction={['column', 'row']}
+                  spacing="10"
+                  justify="center"
                 >
-                  公開
+                  <Button
+                    onClick={() => handleClick('public')}
+                    colorScheme="green"
+                    width={{ base: '240px', sm: '320px' }}
+                  >
+                    公開
+                  </Button>
+                  <Button
+                    onClick={() => handleClick('block')}
+                    colorScheme="red"
+                    width={{ base: '240px', sm: '320px' }}
+                  >
+                    ブロック
+                  </Button>
+                </Stack>
+              )}
+              {(content.status === 'public' || content.status === 'block') && (
+                <Button
+                  onClick={() => handleClick('private')}
+                  colorScheme="blue"
+                  width={{ base: '240px', sm: '320px' }}
+                >
+                  非公開
                 </Button>
-                <Button colorScheme="red" onClick={() => handleClick('block')}>
-                  ブロック
-                </Button>
-              </ButtonGroup>
-            )}
-            {(content.status === 'public' || content.status === 'block') && (
-              <Button colorScheme="blue" onClick={() => handleClick('private')}>
-                非公開
-              </Button>
-            )}
+              )}
+            </Box>
 
             <ConfirmDialog
               nextStatus={nextStatus}
               modalState={isOpen}
-              handleClose={onClose}
+              closeModal={handleClose}
+              closeDialog={onClose}
             />
           </Box>
         </ModalBody>

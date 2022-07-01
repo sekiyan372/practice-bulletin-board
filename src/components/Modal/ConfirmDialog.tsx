@@ -1,7 +1,6 @@
 import {
   AlertDialog,
   AlertDialogBody,
-  AlertDialogCloseButton,
   AlertDialogContent,
   AlertDialogFooter,
   AlertDialogHeader,
@@ -9,37 +8,44 @@ import {
   Button,
   Text,
 } from '@chakra-ui/react'
-import { FC, useRef } from 'react'
+import { FC, useCallback, useRef } from 'react'
 
 import type { Album } from '~/types'
 
 type Props = {
   nextStatus: Album['status']
   modalState: boolean
-  handleClose: () => void
+  closeModal: () => void
+  closeDialog: () => void
 }
 
 export const ConfirmDialog: FC<Props> = ({
   nextStatus,
   modalState,
-  handleClose,
+  closeModal,
+  closeDialog,
 }) => {
   const cancelRef = useRef(null)
+
+  const handleClose = useCallback(() => {
+    closeModal()
+    closeDialog()
+  }, [closeDialog, closeModal])
 
   return (
     <>
       <AlertDialog
         motionPreset="slideInBottom"
         leastDestructiveRef={cancelRef}
-        onClose={handleClose}
+        onClose={closeDialog}
         isOpen={modalState}
         isCentered
       >
         <AlertDialogOverlay />
         <AlertDialogContent>
-          <AlertDialogHeader>実行確認</AlertDialogHeader>
-          <AlertDialogCloseButton />
-          <AlertDialogBody>
+          <AlertDialogHeader color="gray.800">実行確認</AlertDialogHeader>
+
+          <AlertDialogBody color="gray.800">
             本当に作品を
             <Text
               color={`${statusToColor(nextStatus)}.500`}
@@ -51,11 +57,13 @@ export const ConfirmDialog: FC<Props> = ({
             </Text>
             にしてもよろしいですか？
           </AlertDialogBody>
+
           <AlertDialogFooter>
-            <Button ref={cancelRef} onClick={handleClose}>
+            <Button ref={cancelRef} onClick={closeDialog} color="gray.800">
               キャンセル
             </Button>
             <Button
+              onClick={() => handleClose()}
               ml={3}
               colorScheme={statusToColor(nextStatus)}
               color="white"

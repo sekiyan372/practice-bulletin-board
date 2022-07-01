@@ -1,4 +1,5 @@
 import { Box, Flex, Icon, Image, Text, useDisclosure } from '@chakra-ui/react'
+import dayjs from 'dayjs'
 import type { FC } from 'react'
 import { BsFillPersonFill } from 'react-icons/bs'
 
@@ -15,10 +16,10 @@ export const PhotoCard: FC<Props> = ({ content }) => {
   return (
     <Box
       onClick={onOpen}
-      width="300px"
+      width="240px"
       p="10px"
-      pb="50px"
       backgroundColor="gray.100"
+      color="gray.800"
     >
       <Image
         src={content.imageUrl}
@@ -30,7 +31,7 @@ export const PhotoCard: FC<Props> = ({ content }) => {
         <Icon as={BsFillPersonFill} my="auto" />
         <Text color="main.orange">{content.name}</Text>
       </Flex>
-      <Text>{content.createdAt.toString()}</Text>
+      <Text>{dayjs(content.createdAt).format('YYYY/MM/DD HH:mm:ss')}</Text>
 
       <PhotoModal content={content} modalState={isOpen} handleClose={onClose} />
     </Box>

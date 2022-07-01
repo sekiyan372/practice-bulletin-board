@@ -45,9 +45,9 @@ const Album: NextPage = () => {
         アルバム管理
       </Heading>
       <Skeleton isLoaded={!loading}>
-        <Tabs variant="enclosed" px="50" pb="10">
+        <Tabs variant="enclosed" px={{ base: 4, sm: 50 }} pb="10">
           <TabList>
-            <Tab>
+            <Tab color="gray.800">
               未公開
               <Text
                 display="inline"
@@ -60,7 +60,7 @@ const Album: NextPage = () => {
                 {privateData.length}
               </Text>
             </Tab>
-            <Tab>
+            <Tab color="gray.800">
               公開
               <Text
                 display="inline"
@@ -73,7 +73,7 @@ const Album: NextPage = () => {
                 {publicData.length}
               </Text>
             </Tab>
-            <Tab>
+            <Tab color="gray.800">
               ブロック
               <Text
                 display="inline"

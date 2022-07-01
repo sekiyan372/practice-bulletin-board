@@ -24,9 +24,9 @@ export const Header: FC = () => {
       minWidth="max-content"
       alignItems="center"
       gap="2"
-      p="4"
+      p={{ base: 2, sm: 4 }}
     >
-      <Heading fontSize="30px">
+      <Heading fontSize={{ base: '15px', sm: '30px' }}>
         <NextLink href="/">撮っテク！管理者ページ</NextLink>
       </Heading>
 
