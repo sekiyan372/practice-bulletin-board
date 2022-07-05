@@ -10,9 +10,11 @@ import {
 } from '@chakra-ui/react'
 import { FC, useCallback, useRef } from 'react'
 
+import { useAlbum } from '~/hooks/useAlbum'
 import type { Album } from '~/types'
 
 type Props = {
+  content: Album
   nextStatus: Album['status']
   modalState: boolean
   closeModal: () => void
@@ -20,17 +22,20 @@ type Props = {
 }
 
 export const ConfirmDialog: FC<Props> = ({
+  content,
   nextStatus,
   modalState,
   closeModal,
   closeDialog,
 }) => {
   const cancelRef = useRef(null)
+  const { updateData } = useAlbum()
 
   const handleClose = useCallback(() => {
+    updateData(content.id, nextStatus)
     closeModal()
     closeDialog()
-  }, [closeDialog, closeModal])
+  }, [updateData, content, nextStatus, closeDialog, closeModal])
 
   return (
     <>

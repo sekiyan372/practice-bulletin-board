@@ -1,20 +1,19 @@
-// eslint-disable-next-line simple-import-sort/imports
 import {
   Box,
   Button,
+  Heading,
   Image,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
   ModalOverlay,
-  Text,
-  Heading,
-  useDisclosure,
   Stack,
+  Text,
+  useDisclosure,
 } from '@chakra-ui/react'
 import dayjs from 'dayjs'
-import { FC, useState, useCallback } from 'react'
+import { FC, useCallback, useState } from 'react'
 
 import { ConfirmDialog } from '~/components/Modal'
 import type { Album } from '~/types'
@@ -108,6 +107,7 @@ export const PhotoModal: FC<Props> = ({ content, modalState, handleClose }) => {
             </Box>
 
             <ConfirmDialog
+              content={content}
               nextStatus={nextStatus}
               modalState={isOpen}
               closeModal={handleClose}

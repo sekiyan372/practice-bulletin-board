@@ -16,11 +16,11 @@ import { MdDelete } from 'react-icons/md'
 
 import { AlertHealthCheckFailed } from '~/components/Alert'
 import { PhotoCard } from '~/components/Card'
-import { useFetchAlbum } from '~/hooks/useFetchAlbum'
+import { useAlbum } from '~/hooks/useAlbum'
 import type { Album } from '~/types'
 
 const Album: NextPage = () => {
-  const [data, getData, { loading, error }] = useFetchAlbum()
+  const { data, getData, loading, error } = useAlbum()
 
   const privateData = useMemo<Album[]>(() => {
     return data.filter((album) => album.status === 'private')
@@ -97,7 +97,7 @@ const Album: NextPage = () => {
           <TabPanels>
             <TabPanel>
               {privateData.map((album) => (
-                <PhotoCard content={album} key={album.id} />
+                <PhotoCard key={album.id} content={album} />
               ))}
             </TabPanel>
             <TabPanel>
