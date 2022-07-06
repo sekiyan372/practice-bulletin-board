@@ -1,18 +1,24 @@
 import { Tab, TabList, Text } from '@chakra-ui/react'
-import type { FC } from 'react'
+import type { Dispatch, FC, SetStateAction } from 'react'
 import { memo } from 'react'
+
+import { AlbumStatus } from '~/types'
 
 type Props = {
   privateLength: number
   publicLength: number
   blockedLength: number
+  handleSelected: Dispatch<SetStateAction<AlbumStatus>>
 }
 
 export const ManageTabList: FC<Props> = memo(
-  ({ privateLength, publicLength, blockedLength }) => {
+  ({ privateLength, publicLength, blockedLength, handleSelected }) => {
     return (
       <TabList>
-        <Tab color="gray.800">
+        <Tab
+          color="gray.800"
+          onClick={() => handleSelected(AlbumStatus.PRIVATE)}
+        >
           未公開
           <Text
             display="inline"
@@ -25,7 +31,10 @@ export const ManageTabList: FC<Props> = memo(
             {privateLength}
           </Text>
         </Tab>
-        <Tab color="gray.800">
+        <Tab
+          color="gray.800"
+          onClick={() => handleSelected(AlbumStatus.PUBLIC)}
+        >
           公開
           <Text
             display="inline"
@@ -38,7 +47,7 @@ export const ManageTabList: FC<Props> = memo(
             {publicLength}
           </Text>
         </Tab>
-        <Tab color="gray.800">
+        <Tab color="gray.800" onClick={() => handleSelected(AlbumStatus.BLOCK)}>
           ブロック
           <Text
             display="inline"
