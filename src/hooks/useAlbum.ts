@@ -17,13 +17,12 @@ import { firestore } from '~/database/firebase'
 import type { Album } from '~/types'
 import { albumConverter, isEnv } from '~/utils'
 
-export type UseDataType = {
-  data: Album[]
-  getData: () => Promise<void>
-  updateData: (id: Album['id'], status: Album['status']) => Promise<void>
-  loading: boolean
-  error: Error | undefined
-}
+export type UseDataType = [
+  Album[],
+  () => Promise<void>,
+  (id: Album['id'], status: Album['status']) => Promise<void>,
+  { loading: boolean; error: Error | undefined }
+]
 
 export const useAlbum = (): UseDataType => {
   const [data, setData] = useState<Album[]>([])
@@ -77,5 +76,5 @@ export const useAlbum = (): UseDataType => {
     []
   )
 
-  return { data, getData, updateData, loading, error }
+  return [data, getData, updateData, { loading, error }]
 }

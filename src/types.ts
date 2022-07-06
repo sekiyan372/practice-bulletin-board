@@ -15,3 +15,12 @@ export type Album = {
   createdAt: Date
   updatedAt: Date
 }
+
+export type FocusAlbum = {
+  album: Album
+  getAlbum: () => Promise<void>
+  updateAlbum: (
+    id: string,
+    status: 'public' | 'private' | 'block'
+  ) => Promise<void>
+}

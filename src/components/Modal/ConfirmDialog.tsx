@@ -9,12 +9,12 @@ import {
   Text,
 } from '@chakra-ui/react'
 import { FC, useCallback, useRef } from 'react'
+import { useRecoilState } from 'recoil'
 
-import { useAlbum } from '~/hooks/useAlbum'
+import { atomFocusAlbum } from '~/recoil'
 import type { Album } from '~/types'
 
 type Props = {
-  content: Album
   nextStatus: Album['status']
   modalState: boolean
   closeModal: () => void
@@ -22,20 +22,23 @@ type Props = {
 }
 
 export const ConfirmDialog: FC<Props> = ({
-  content,
   nextStatus,
   modalState,
   closeModal,
   closeDialog,
 }) => {
   const cancelRef = useRef(null)
-  const { updateData } = useAlbum()
+  const [focusAlbum, setFocusAlbum] = useRecoilState(atomFocusAlbum)
 
-  const handleClose = useCallback(() => {
-    updateData(content.id, nextStatus)
+  const handleClose = useCallback(async () => {
+    if (!focusAlbum) return
+
+    await focusAlbum.updateAlbum(focusAlbum.album.id, nextStatus)
+    await focusAlbum.getAlbum()
     closeModal()
     closeDialog()
-  }, [updateData, content, nextStatus, closeDialog, closeModal])
+    setFocusAlbum(null)
+  }, [focusAlbum, setFocusAlbum, nextStatus, closeModal, closeDialog])
 
   return (
     <>
@@ -45,6 +48,7 @@ export const ConfirmDialog: FC<Props> = ({
         onClose={closeDialog}
         isOpen={modalState}
         isCentered
+        blockScrollOnMount={false}
       >
         <AlertDialogOverlay />
         <AlertDialogContent>

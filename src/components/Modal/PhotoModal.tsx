@@ -14,19 +14,23 @@ import {
 } from '@chakra-ui/react'
 import dayjs from 'dayjs'
 import { FC, useCallback, useState } from 'react'
+import { useRecoilValue } from 'recoil'
 
 import { ConfirmDialog } from '~/components/Modal'
+import { atomFocusAlbum } from '~/recoil'
 import type { Album } from '~/types'
 
 type Props = {
-  content: Album
   modalState: boolean
   handleClose: () => void
 }
 
-export const PhotoModal: FC<Props> = ({ content, modalState, handleClose }) => {
+export const PhotoModal: FC<Props> = ({ modalState, handleClose }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [nextStatus, setNextStatus] = useState<Album['status']>(content.status)
+  const focusAlbum = useRecoilValue(atomFocusAlbum)
+  const [nextStatus, setNextStatus] = useState<Album['status']>(
+    focusAlbum?.album.status ? focusAlbum.album.status : 'private'
+  )
 
   const handleClick = useCallback(
     (state: Album['status']) => {
@@ -44,7 +48,7 @@ export const PhotoModal: FC<Props> = ({ content, modalState, handleClose }) => {
         <ModalBody>
           <Box color="gray.800">
             <Image
-              src={content.imageUrl}
+              src={focusAlbum?.album.imageUrl}
               alt="Picture of photo contest"
               height={600}
               mx="auto"
@@ -58,22 +62,24 @@ export const PhotoModal: FC<Props> = ({ content, modalState, handleClose }) => {
             >
               <Box py="2">
                 <Heading fontSize="xl">投稿者</Heading>
-                <Text color="gray.800">{content.name}</Text>
+                <Text color="gray.800">{focusAlbum?.album.name}</Text>
               </Box>
               <Box py="2">
                 <Heading fontSize="xl">コメント</Heading>
-                <Text color="gray.800">{content.comment}</Text>
+                <Text color="gray.800">{focusAlbum?.album.comment}</Text>
               </Box>
               <Box py="2">
                 <Heading fontSize="xl">投稿日時</Heading>
                 <Text color="gray.600">
-                  {dayjs(content.createdAt).format('YYYY/MM/DD HH:mm:ss')}
+                  {dayjs(focusAlbum?.album.createdAt).format(
+                    'YYYY/MM/DD HH:mm:ss'
+                  )}
                 </Text>
               </Box>
             </Stack>
 
             <Box textAlign="center" py="10">
-              {content.status === 'private' && (
+              {focusAlbum?.album.status === 'private' && (
                 <Stack
                   direction={['column', 'row']}
                   spacing="10"
@@ -95,7 +101,8 @@ export const PhotoModal: FC<Props> = ({ content, modalState, handleClose }) => {
                   </Button>
                 </Stack>
               )}
-              {(content.status === 'public' || content.status === 'block') && (
+              {(focusAlbum?.album.status === 'public' ||
+                focusAlbum?.album.status === 'block') && (
                 <Button
                   onClick={() => handleClick('private')}
                   colorScheme="blue"
@@ -107,7 +114,6 @@ export const PhotoModal: FC<Props> = ({ content, modalState, handleClose }) => {
             </Box>
 
             <ConfirmDialog
-              content={content}
               nextStatus={nextStatus}
               modalState={isOpen}
               closeModal={handleClose}

@@ -20,7 +20,7 @@ import { useAlbum } from '~/hooks/useAlbum'
 import type { Album } from '~/types'
 
 const Album: NextPage = () => {
-  const { data, getData, loading, error } = useAlbum()
+  const [data, getData, updateData, { loading, error }] = useAlbum()
 
   const privateData = useMemo<Album[]>(() => {
     return data.filter((album) => album.status === 'private')
@@ -97,17 +97,38 @@ const Album: NextPage = () => {
           <TabPanels>
             <TabPanel>
               {privateData.map((album) => (
-                <PhotoCard key={album.id} content={album} />
+                <PhotoCard
+                  key={album.id}
+                  focusAlbum={{
+                    album: album,
+                    getAlbum: getData,
+                    updateAlbum: updateData,
+                  }}
+                />
               ))}
             </TabPanel>
             <TabPanel>
               {publicData.map((album) => (
-                <PhotoCard content={album} key={album.id} />
+                <PhotoCard
+                  key={album.id}
+                  focusAlbum={{
+                    album: album,
+                    getAlbum: getData,
+                    updateAlbum: updateData,
+                  }}
+                />
               ))}
             </TabPanel>
             <TabPanel>
               {blockedData.map((album) => (
-                <PhotoCard content={album} key={album.id} />
+                <PhotoCard
+                  key={album.id}
+                  focusAlbum={{
+                    album: album,
+                    getAlbum: getData,
+                    updateAlbum: updateData,
+                  }}
+                />
               ))}
             </TabPanel>
           </TabPanels>

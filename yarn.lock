@@ -1376,6 +1376,13 @@
     "@types/scheduler" "*"
     csstype "^3.0.2"
 
+"@types/recoil@^0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@types/recoil/-/recoil-0.0.9.tgz#a5efceda791ee2720418e232445bb34f4f2e4be9"
+  integrity sha512-dXKcvdzQbkFCcULgxhtc/3shoCNqsspRUY1KwIUYcAzgS0qY7+IxlcjRjq+9PizFnzKrHESllkbezqCMstPmQA==
+  dependencies:
+    recoil "*"
+
 "@types/scheduler@*":
   version "0.16.2"
   resolved "https://registry.yarnpkg.com/@types/scheduler/-/scheduler-0.16.2.tgz#1a62f89525723dde24ba1b01b092bf5df8ad4d39"
@@ -3371,7 +3378,7 @@ readable-stream@~2.3.6:
     string_decoder "~1.1.1"
     util-deprecate "~1.0.1"
 
-recoil@^0.7.4:
+recoil@*, recoil@^0.7.4:
   version "0.7.4"
   resolved "https://registry.yarnpkg.com/recoil/-/recoil-0.7.4.tgz#d6508fa656d9c93e66fdf334e1f723a9e98801cf"
   integrity sha512-sCXvQGMfSprkNU4ZRkJV4B0qFQSURJMgsICqY1952WRlg66NMwYqi6n67vhnhn0qw4zHU1gHXJuMvRDaiRNFZw==
