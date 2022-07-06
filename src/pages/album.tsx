@@ -10,7 +10,7 @@ import { useAlbum } from '~/hooks/useAlbum'
 import type { Album } from '~/types'
 
 const Album: NextPage = () => {
-  const [data, getData, updateData, { loading, error }] = useAlbum()
+  const [data, getData, updateData, deleteData, { loading, error }] = useAlbum()
 
   const privateData = useMemo<Album[]>(() => {
     return data.filter((album) => album.status === 'private')
@@ -56,6 +56,7 @@ const Album: NextPage = () => {
                     album: album,
                     getAlbum: getData,
                     updateAlbum: updateData,
+                    deleteAlbum: deleteData,
                   }}
                 />
               ))}
@@ -68,6 +69,7 @@ const Album: NextPage = () => {
                     album: album,
                     getAlbum: getData,
                     updateAlbum: updateData,
+                    deleteAlbum: deleteData,
                   }}
                 />
               ))}
@@ -80,6 +82,7 @@ const Album: NextPage = () => {
                     album: album,
                     getAlbum: getData,
                     updateAlbum: updateData,
+                    deleteAlbum: deleteData,
                   }}
                 />
               ))}

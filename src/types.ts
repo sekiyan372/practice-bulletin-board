@@ -14,6 +14,7 @@ export enum AlbumStatus {
 
 export type Album = {
   id: string
+  imagePath: string
   imageUrl: string
   name: string
   comment: string
@@ -26,4 +27,5 @@ export type FocusAlbum = {
   album: Album
   getAlbum: () => Promise<void>
   updateAlbum: (id: string, status: AlbumStatus) => Promise<void>
+  deleteAlbum: (id: string, imagePath: string) => Promise<void>
 }
