@@ -1,5 +1,6 @@
 import {
   Button,
+  Flex,
   Heading,
   Skeleton,
   Stack,
@@ -95,7 +96,7 @@ const Album: NextPage = () => {
           </Stack>
 
           <TabPanels>
-            <TabPanel>
+            <TabPanel as={Flex} wrap="wrap">
               {privateData.map((album) => (
                 <PhotoCard
                   key={album.id}
@@ -107,7 +108,7 @@ const Album: NextPage = () => {
                 />
               ))}
             </TabPanel>
-            <TabPanel>
+            <TabPanel as={Flex} wrap="wrap">
               {publicData.map((album) => (
                 <PhotoCard
                   key={album.id}
@@ -119,7 +120,7 @@ const Album: NextPage = () => {
                 />
               ))}
             </TabPanel>
-            <TabPanel>
+            <TabPanel as={Flex} wrap="wrap">
               {blockedData.map((album) => (
                 <PhotoCard
                   key={album.id}

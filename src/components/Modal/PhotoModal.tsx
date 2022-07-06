@@ -52,9 +52,10 @@ export const PhotoModal: FC<Props> = memo(({ modalState, handleClose }) => {
             <Image
               src={focusAlbum?.album.imageUrl}
               alt="Picture of photo contest"
-              height={600}
+              height={{ base: '200', sm: '320', md: '600' }}
               mx="auto"
               my="10"
+              fit="cover"
             />
 
             <Stack

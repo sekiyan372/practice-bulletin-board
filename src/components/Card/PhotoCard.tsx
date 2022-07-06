@@ -26,7 +26,8 @@ export const PhotoCard: FC<Props> = ({ focusAlbum }) => {
     <Box
       onClick={handleModalClick}
       width="240px"
-      p="10px"
+      p="2"
+      m="2"
       backgroundColor="gray.100"
       color="gray.800"
       _hover={{
@@ -38,8 +39,9 @@ export const PhotoCard: FC<Props> = ({ focusAlbum }) => {
       <Image
         src={focusAlbum.album.imageUrl}
         alt="Picture of photo contest"
-        height={160}
+        height="160"
         mx="auto"
+        fit="cover"
       />
       <Flex pt="3">
         <Icon as={BsFillPersonFill} my="auto" />
