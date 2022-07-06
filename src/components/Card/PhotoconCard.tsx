@@ -17,7 +17,7 @@ export const PhotoconCard: FC<Props> = ({ contest, index }) => {
       <Image
         src={contest.image}
         alt="Picture of photo contest"
-        height={160}
+        height="160"
         onClick={onOpen}
         _hover={{
           cursor: 'pointer',
