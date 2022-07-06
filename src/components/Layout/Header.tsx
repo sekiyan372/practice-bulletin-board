@@ -12,11 +12,12 @@ import {
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import type { FC } from 'react'
+import { memo } from 'react'
 import { FaAward, FaHome } from 'react-icons/fa'
 import { GiHamburgerMenu } from 'react-icons/gi'
 import { MdPhotoAlbum } from 'react-icons/md'
 
-export const Header: FC = () => {
+export const Header: FC = memo(() => {
   return (
     <Flex
       bg="main.red"
@@ -24,9 +25,9 @@ export const Header: FC = () => {
       minWidth="max-content"
       alignItems="center"
       gap="2"
-      p="4"
+      p={{ base: 2, sm: 4 }}
     >
-      <Heading fontSize="30px">
+      <Heading fontSize={{ base: '15px', sm: '30px' }}>
         <NextLink href="/">撮っテク！管理者ページ</NextLink>
       </Heading>
 
@@ -68,4 +69,4 @@ export const Header: FC = () => {
       </Menu>
     </Flex>
   )
-}
+})

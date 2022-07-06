@@ -1,7 +1,8 @@
 import { chakra } from '@chakra-ui/react'
 import type { FC } from 'react'
+import { memo } from 'react'
 
-export const Footer: FC = () => {
+export const Footer: FC = memo(() => {
   return (
     <chakra.footer
       display="flex"
@@ -14,4 +15,4 @@ export const Footer: FC = () => {
       © 2022 Tourism Project.
     </chakra.footer>
   )
-}
+})
