@@ -1,22 +1,11 @@
-import {
-  Button,
-  Flex,
-  Heading,
-  Skeleton,
-  Stack,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  Text,
-} from '@chakra-ui/react'
+import { Heading, Skeleton, Stack, TabPanels, Tabs } from '@chakra-ui/react'
 import type { NextPage } from 'next'
 import { useEffect, useMemo } from 'react'
-import { MdDelete } from 'react-icons/md'
 
 import { AlertHealthCheckFailed } from '~/components/Alert'
-import { PhotoCard } from '~/components/Card'
+import { DeleteContentsButton } from '~/components/Button'
+import { AlbumCard } from '~/components/Card'
+import { ManageTabList, ManageTabPanel } from '~/components/Tab'
 import { useAlbum } from '~/hooks/useAlbum'
 import type { Album } from '~/types'
 
@@ -45,60 +34,23 @@ const Album: NextPage = () => {
       <Heading textAlign="center" m="50px" color="gray.800">
         アルバム管理
       </Heading>
+
       <Skeleton isLoaded={!loading}>
         <Tabs variant="enclosed" px={{ base: 4, sm: 50 }} pb="10">
-          <TabList>
-            <Tab color="gray.800">
-              未公開
-              <Text
-                display="inline"
-                backgroundColor="blue.500"
-                color="white"
-                px="2"
-                ml="1"
-                borderRadius="50"
-              >
-                {privateData.length}
-              </Text>
-            </Tab>
-            <Tab color="gray.800">
-              公開
-              <Text
-                display="inline"
-                backgroundColor="green.500"
-                color="white"
-                px="2"
-                ml="1"
-                borderRadius="50"
-              >
-                {publicData.length}
-              </Text>
-            </Tab>
-            <Tab color="gray.800">
-              ブロック
-              <Text
-                display="inline"
-                backgroundColor="red.500"
-                color="white"
-                px="2"
-                ml="1"
-                borderRadius="50"
-              >
-                {blockedData.length}
-              </Text>
-            </Tab>
-          </TabList>
+          <ManageTabList
+            privateLength={privateData.length}
+            publicLength={publicData.length}
+            blockedLength={blockedData.length}
+          />
 
           <Stack direction="row" pt="3">
-            <Button leftIcon={<MdDelete />} colorScheme="red" ml="auto">
-              選択した項目を削除
-            </Button>
+            <DeleteContentsButton>選択した項目を削除</DeleteContentsButton>
           </Stack>
 
           <TabPanels>
-            <TabPanel as={Flex} wrap="wrap">
+            <ManageTabPanel>
               {privateData.map((album) => (
-                <PhotoCard
+                <AlbumCard
                   key={album.id}
                   focusAlbum={{
                     album: album,
@@ -107,10 +59,10 @@ const Album: NextPage = () => {
                   }}
                 />
               ))}
-            </TabPanel>
-            <TabPanel as={Flex} wrap="wrap">
+            </ManageTabPanel>
+            <ManageTabPanel>
               {publicData.map((album) => (
-                <PhotoCard
+                <AlbumCard
                   key={album.id}
                   focusAlbum={{
                     album: album,
@@ -119,10 +71,10 @@ const Album: NextPage = () => {
                   }}
                 />
               ))}
-            </TabPanel>
-            <TabPanel as={Flex} wrap="wrap">
+            </ManageTabPanel>
+            <ManageTabPanel>
               {blockedData.map((album) => (
-                <PhotoCard
+                <AlbumCard
                   key={album.id}
                   focusAlbum={{
                     album: album,
@@ -131,7 +83,7 @@ const Album: NextPage = () => {
                   }}
                 />
               ))}
-            </TabPanel>
+            </ManageTabPanel>
           </TabPanels>
         </Tabs>
       </Skeleton>

@@ -23,9 +23,9 @@ export const AlertHealthCheckFailed: FC<Props> = ({ error }) => {
   return (
     <>
       {flag && (
-        <Alert status="error" position="absolute" top={16} left={0} zIndex={10}>
+        <Alert status="error" position="absolute" top="16" left="0" zIndex="10">
           <AlertIcon />
-          <Box ml={4}>
+          <Box ml="4">
             <Text>
               データの疎通に失敗しました。サーバー管理元にお問い合わせください。
             </Text>
