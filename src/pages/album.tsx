@@ -11,7 +11,7 @@ import {
   Text,
 } from '@chakra-ui/react'
 import type { NextPage } from 'next'
-import { memo, useEffect, useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { MdDelete } from 'react-icons/md'
 
 import { AlertHealthCheckFailed } from '~/components/Alert'
@@ -138,4 +138,4 @@ const Album: NextPage = () => {
   )
 }
 
-export default memo(Album)
+export default Album

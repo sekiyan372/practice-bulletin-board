@@ -13,23 +13,25 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import dayjs from 'dayjs'
-import { FC, useCallback, useState } from 'react'
+import type { FC } from 'react'
+import { memo, useCallback, useState } from 'react'
 import { useRecoilValue } from 'recoil'
 
 import { ConfirmDialog } from '~/components/Modal'
 import { atomFocusAlbum } from '~/recoil'
 import type { Album } from '~/types'
+import { AlbumStatus } from '~/types'
 
 type Props = {
   modalState: boolean
   handleClose: () => void
 }
 
-export const PhotoModal: FC<Props> = ({ modalState, handleClose }) => {
+export const PhotoModal: FC<Props> = memo(({ modalState, handleClose }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const focusAlbum = useRecoilValue(atomFocusAlbum)
   const [nextStatus, setNextStatus] = useState<Album['status']>(
-    focusAlbum?.album.status ? focusAlbum.album.status : 'private'
+    focusAlbum?.album.status ? focusAlbum.album.status : AlbumStatus.PRIVATE
   )
 
   const handleClick = useCallback(
@@ -86,14 +88,14 @@ export const PhotoModal: FC<Props> = ({ modalState, handleClose }) => {
                   justify="center"
                 >
                   <Button
-                    onClick={() => handleClick('public')}
+                    onClick={() => handleClick(AlbumStatus.PUBLIC)}
                     colorScheme="green"
                     width={{ base: '240px', sm: '320px' }}
                   >
                     公開
                   </Button>
                   <Button
-                    onClick={() => handleClick('block')}
+                    onClick={() => handleClick(AlbumStatus.BLOCK)}
                     colorScheme="red"
                     width={{ base: '240px', sm: '320px' }}
                   >
@@ -104,7 +106,7 @@ export const PhotoModal: FC<Props> = ({ modalState, handleClose }) => {
               {(focusAlbum?.album.status === 'public' ||
                 focusAlbum?.album.status === 'block') && (
                 <Button
-                  onClick={() => handleClick('private')}
+                  onClick={() => handleClick(AlbumStatus.PRIVATE)}
                   colorScheme="blue"
                   width={{ base: '240px', sm: '320px' }}
                 >
@@ -124,4 +126,4 @@ export const PhotoModal: FC<Props> = ({ modalState, handleClose }) => {
       </ModalContent>
     </Modal>
   )
-}
+})

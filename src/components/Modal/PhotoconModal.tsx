@@ -8,7 +8,7 @@ import {
   ModalOverlay,
   Text,
 } from '@chakra-ui/react'
-import { FC } from 'react'
+import type { FC } from 'react'
 
 import type { Contest } from '~/types'
 
