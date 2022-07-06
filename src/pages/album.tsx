@@ -4,7 +4,7 @@ import { useEffect, useMemo } from 'react'
 
 import { AlertHealthCheckFailed } from '~/components/Alert'
 import { DeleteContentsButton } from '~/components/Button'
-import { PhotoCard } from '~/components/Card'
+import { AlbumCard } from '~/components/Card'
 import { ManageTabList, ManageTabPanel } from '~/components/Tab'
 import { useAlbum } from '~/hooks/useAlbum'
 import type { Album } from '~/types'
@@ -50,7 +50,7 @@ const Album: NextPage = () => {
           <TabPanels>
             <ManageTabPanel>
               {privateData.map((album) => (
-                <PhotoCard
+                <AlbumCard
                   key={album.id}
                   focusAlbum={{
                     album: album,
@@ -62,7 +62,7 @@ const Album: NextPage = () => {
             </ManageTabPanel>
             <ManageTabPanel>
               {publicData.map((album) => (
-                <PhotoCard
+                <AlbumCard
                   key={album.id}
                   focusAlbum={{
                     album: album,
@@ -74,7 +74,7 @@ const Album: NextPage = () => {
             </ManageTabPanel>
             <ManageTabPanel>
               {blockedData.map((album) => (
-                <PhotoCard
+                <AlbumCard
                   key={album.id}
                   focusAlbum={{
                     album: album,

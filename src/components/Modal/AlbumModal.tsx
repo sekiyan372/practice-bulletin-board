@@ -27,7 +27,7 @@ type Props = {
   handleClose: () => void
 }
 
-export const PhotoModal: FC<Props> = memo(({ modalState, handleClose }) => {
+export const AlbumModal: FC<Props> = memo(({ modalState, handleClose }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const focusAlbum = useRecoilValue(atomFocusAlbum)
   const [nextStatus, setNextStatus] = useState<Album['status']>(

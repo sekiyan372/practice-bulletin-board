@@ -5,7 +5,7 @@ import { useCallback } from 'react'
 import { BsFillPersonFill } from 'react-icons/bs'
 import { useSetRecoilState } from 'recoil'
 
-import { PhotoModal } from '~/components/Modal'
+import { AlbumModal } from '~/components/Modal'
 import { atomFocusAlbum } from '~/recoil'
 import { FocusAlbum } from '~/types'
 
@@ -13,7 +13,7 @@ type Props = {
   focusAlbum: FocusAlbum
 }
 
-export const PhotoCard: FC<Props> = ({ focusAlbum }) => {
+export const AlbumCard: FC<Props> = ({ focusAlbum }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const setFocusAlbum = useSetRecoilState(atomFocusAlbum)
 
@@ -51,7 +51,7 @@ export const PhotoCard: FC<Props> = ({ focusAlbum }) => {
         {dayjs(focusAlbum.album.createdAt).format('YYYY/MM/DD HH:mm:ss')}
       </Text>
 
-      <PhotoModal modalState={isOpen} handleClose={onClose} />
+      <AlbumModal modalState={isOpen} handleClose={onClose} />
     </Box>
   )
 }

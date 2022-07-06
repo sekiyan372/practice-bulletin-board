@@ -1,3 +1,3 @@
 export { PhotoconModal } from './PhotoconModal'
-export { PhotoModal } from './PhotoModal'
+export { AlbumModal } from './AlbumModal'
 export { ConfirmDialog } from './ConfirmDialog'
