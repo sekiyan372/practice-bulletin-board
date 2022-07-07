@@ -23,7 +23,7 @@ type Props = {
   closeDialog: () => void
 }
 
-export const ConfirmDialog: FC<Props> = memo(
+export const AlbumConfirmDialog: FC<Props> = memo(
   ({ nextStatus, modalState, closeModal, closeDialog }) => {
     const cancelRef = useRef(null)
     const [focusAlbum, setFocusAlbum] = useRecoilState(atomFocusAlbum)

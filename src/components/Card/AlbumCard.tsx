@@ -15,16 +15,18 @@ import { useSetRecoilState } from 'recoil'
 
 import { AlbumModal } from '~/components/Modal'
 import { atomFocusAlbum } from '~/recoil'
-import type { FocusAlbum } from '~/types'
+import type { Album, FocusAlbum } from '~/types'
 import { AlbumStatus } from '~/types'
 
 type Props = {
   focusAlbum: FocusAlbum
+  handleCheck: (id: Album['id'], imagePath: Album['imagePath']) => void
 }
 
-export const AlbumCard: FC<Props> = ({ focusAlbum }) => {
+export const AlbumCard: FC<Props> = ({ focusAlbum, handleCheck }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const setFocusAlbum = useSetRecoilState(atomFocusAlbum)
+  const album = focusAlbum.album
 
   const handleModalClick = useCallback(() => {
     onOpen()
@@ -33,8 +35,12 @@ export const AlbumCard: FC<Props> = ({ focusAlbum }) => {
 
   return (
     <Box m="2">
-      {focusAlbum.album.status !== AlbumStatus.PUBLIC && (
-        <Checkbox colorScheme="red" size="lg" />
+      {album.status !== AlbumStatus.PUBLIC && (
+        <Checkbox
+          onChange={() => handleCheck(album.id, album.imagePath)}
+          colorScheme="red"
+          size="lg"
+        />
       )}
       <Box
         onClick={handleModalClick}
@@ -49,7 +55,7 @@ export const AlbumCard: FC<Props> = ({ focusAlbum }) => {
         }}
       >
         <Image
-          src={focusAlbum.album.imageUrl}
+          src={album.imageUrl}
           alt="Picture of photo contest"
           height="160"
           mx="auto"
@@ -57,11 +63,9 @@ export const AlbumCard: FC<Props> = ({ focusAlbum }) => {
         />
         <Flex pt="3">
           <Icon as={BsFillPersonFill} my="auto" />
-          <Text color="main.orange">{focusAlbum.album.name}</Text>
+          <Text color="main.orange">{album.name}</Text>
         </Flex>
-        <Text>
-          {dayjs(focusAlbum.album.createdAt).format('YYYY/MM/DD HH:mm:ss')}
-        </Text>
+        <Text>{dayjs(album.createdAt).format('YYYY/MM/DD HH:mm:ss')}</Text>
 
         <AlbumModal modalState={isOpen} handleClose={onClose} />
       </Box>
