@@ -49,7 +49,7 @@ export const DeleteConfirmDialog: FC<Props> = memo(
             <AlertDialogHeader color="gray.800">実行確認</AlertDialogHeader>
 
             <AlertDialogBody color="gray.800">
-              本当に選択した作品を削除してもよろしいですか？
+              本当に選択した投稿を削除してもよろしいですか？
             </AlertDialogBody>
 
             <AlertDialogFooter>
