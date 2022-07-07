@@ -1,16 +1,34 @@
-import { Heading, Skeleton, Stack, TabPanels, Tabs } from '@chakra-ui/react'
+import {
+  Flex,
+  Heading,
+  Skeleton,
+  Stack,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  useDisclosure,
+} from '@chakra-ui/react'
 import type { NextPage } from 'next'
-import { useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { AlertHealthCheckFailed } from '~/components/Alert'
 import { DeleteContentsButton } from '~/components/Button'
 import { AlbumCard } from '~/components/Card'
-import { ManageTabList, ManageTabPanel } from '~/components/Tab'
+import { DeleteConfirmDialog } from '~/components/Modal'
+import { ManageTabList } from '~/components/Tab'
 import { useAlbum } from '~/hooks/useAlbum'
 import type { Album } from '~/types'
+import { AlbumStatus } from '~/types'
 
 const Album: NextPage = () => {
-  const [data, getData, updateData, { loading, error }] = useAlbum()
+  const [selectedTab, setSelectedTab] = useState<AlbumStatus>(
+    AlbumStatus.PRIVATE
+  )
+  const [checkedAlbums, setCheckedAlbums] = useState<
+    Map<Album['id'], Album['imagePath']>
+  >(new Map())
+  const { data, getData, updateData, deleteData, loading, error } = useAlbum()
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   const privateData = useMemo<Album[]>(() => {
     return data.filter((album) => album.status === 'private')
@@ -23,6 +41,24 @@ const Album: NextPage = () => {
   const blockedData = useMemo<Album[]>(() => {
     return data.filter((album) => album.status === 'block')
   }, [data])
+
+  const handleCheck = useCallback(
+    (id: Album['id'], imagePath: Album['imagePath']) => {
+      const changedAlbums = checkedAlbums
+      if (checkedAlbums.has(id)) {
+        changedAlbums.delete(id)
+        setCheckedAlbums(changedAlbums)
+      } else {
+        setCheckedAlbums(changedAlbums.set(id, imagePath))
+      }
+    },
+    [checkedAlbums]
+  )
+
+  const handleClickDelete = useCallback(() => {
+    if (checkedAlbums.size === 0 || selectedTab === AlbumStatus.PUBLIC) return
+    onOpen()
+  }, [onOpen, checkedAlbums, selectedTab])
 
   useEffect(() => {
     getData()
@@ -41,14 +77,27 @@ const Album: NextPage = () => {
             privateLength={privateData.length}
             publicLength={publicData.length}
             blockedLength={blockedData.length}
+            handleSelected={setSelectedTab}
           />
 
-          <Stack direction="row" pt="3">
-            <DeleteContentsButton>選択した項目を削除</DeleteContentsButton>
-          </Stack>
+          {selectedTab !== AlbumStatus.PUBLIC && (
+            <Stack direction="row" pt="3">
+              <DeleteContentsButton handleClick={handleClickDelete}>
+                選択した項目を削除
+              </DeleteContentsButton>
+
+              <DeleteConfirmDialog
+                albumsMapData={checkedAlbums}
+                isOpen={isOpen}
+                onClose={onClose}
+                getAlbums={getData}
+                deleteAlbum={deleteData}
+              />
+            </Stack>
+          )}
 
           <TabPanels>
-            <ManageTabPanel>
+            <TabPanel as={Flex} wrap="wrap">
               {privateData.map((album) => (
                 <AlbumCard
                   key={album.id}
@@ -56,11 +105,13 @@ const Album: NextPage = () => {
                     album: album,
                     getAlbum: getData,
                     updateAlbum: updateData,
+                    deleteAlbum: deleteData,
                   }}
+                  handleCheck={handleCheck}
                 />
               ))}
-            </ManageTabPanel>
-            <ManageTabPanel>
+            </TabPanel>
+            <TabPanel as={Flex} wrap="wrap">
               {publicData.map((album) => (
                 <AlbumCard
                   key={album.id}
@@ -68,11 +119,13 @@ const Album: NextPage = () => {
                     album: album,
                     getAlbum: getData,
                     updateAlbum: updateData,
+                    deleteAlbum: deleteData,
                   }}
+                  handleCheck={handleCheck}
                 />
               ))}
-            </ManageTabPanel>
-            <ManageTabPanel>
+            </TabPanel>
+            <TabPanel as={Flex} wrap="wrap">
               {blockedData.map((album) => (
                 <AlbumCard
                   key={album.id}
@@ -80,10 +133,12 @@ const Album: NextPage = () => {
                     album: album,
                     getAlbum: getData,
                     updateAlbum: updateData,
+                    deleteAlbum: deleteData,
                   }}
+                  handleCheck={handleCheck}
                 />
               ))}
-            </ManageTabPanel>
+            </TabPanel>
           </TabPanels>
         </Tabs>
       </Skeleton>

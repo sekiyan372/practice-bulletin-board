@@ -12,6 +12,7 @@ export const albumConverter = (): FirestoreDataConverter<Album> => ({
   toFirestore(value: WithFieldValue<Album>) {
     return {
       imageUrl: value.imageUrl,
+      imagePath: value.imagePath,
       name: value.name,
       comment: value.comment,
       status: value.status,
@@ -23,6 +24,7 @@ export const albumConverter = (): FirestoreDataConverter<Album> => ({
     const data = snapshot.data()
     return {
       id: snapshot.id,
+      imagePath: data.imagePath,
       imageUrl: data.imageUrl,
       name: data.name,
       comment: data.comment,

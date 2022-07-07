@@ -17,7 +17,7 @@ import type { FC } from 'react'
 import { memo, useCallback, useState } from 'react'
 import { useRecoilValue } from 'recoil'
 
-import { ConfirmDialog } from '~/components/Modal'
+import { AlbumConfirmDialog } from '~/components/Modal'
 import { atomFocusAlbum } from '~/recoil'
 import type { Album } from '~/types'
 import { AlbumStatus } from '~/types'
@@ -116,7 +116,7 @@ export const AlbumModal: FC<Props> = memo(({ modalState, handleClose }) => {
               )}
             </Box>
 
-            <ConfirmDialog
+            <AlbumConfirmDialog
               nextStatus={nextStatus}
               modalState={isOpen}
               closeModal={handleClose}

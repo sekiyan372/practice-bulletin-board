@@ -1,28 +1,29 @@
-import {
-  CollectionReference,
-  QuerySnapshot,
-  updateDoc,
-} from 'firebase/firestore'
+import type { CollectionReference, QuerySnapshot } from 'firebase/firestore'
 import {
   collection,
+  deleteDoc,
   doc,
   getDocs,
   orderBy,
   query,
   serverTimestamp,
+  updateDoc,
 } from 'firebase/firestore'
+import { deleteObject, ref } from 'firebase/storage'
 import { useCallback, useState } from 'react'
 
-import { firestore } from '~/database/firebase'
+import { firestore, storage } from '~/database/firebase'
 import type { Album } from '~/types'
 import { albumConverter, isEnv } from '~/utils'
 
-export type UseDataType = [
-  Album[],
-  () => Promise<void>,
-  (id: Album['id'], status: Album['status']) => Promise<void>,
-  { loading: boolean; error: Error | undefined }
-]
+export type UseDataType = {
+  data: Album[]
+  getData: () => Promise<void>
+  updateData: (id: Album['id'], status: Album['status']) => Promise<void>
+  deleteData: (id: Album['id'], imagePath: Album['imagePath']) => Promise<void>
+  loading: boolean
+  error: Error | undefined
+}
 
 export const useAlbum = (): UseDataType => {
   const [data, setData] = useState<Album[]>([])
@@ -76,5 +77,30 @@ export const useAlbum = (): UseDataType => {
     []
   )
 
-  return [data, getData, updateData, { loading, error }]
+  const deleteData = useCallback(
+    async (id: Album['id'], imagePath: Album['imagePath']) => {
+      if (!firestore) return
+
+      setLoading(true)
+      try {
+        const albumRef = doc(
+          firestore,
+          isEnv() ? 'album_production' : 'album_development',
+          id
+        )
+        await deleteDoc(albumRef)
+
+        const imageRef = ref(storage, imagePath)
+        await deleteObject(imageRef)
+      } catch (error) {
+        setError(error as Error)
+        throw error
+      } finally {
+        setLoading(false)
+      }
+    },
+    []
+  )
+
+  return { data, getData, updateData, deleteData, loading, error }
 }
