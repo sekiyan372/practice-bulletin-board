@@ -44,7 +44,10 @@ const Home: NextPage<Props> = ({ topMd }) => {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const topMd = fs.readFileSync(`${process.cwd()}/public/top.md`, 'utf8')
+  const topMd: string = fs.readFileSync(
+    `${process.cwd()}/public/top.md`,
+    'utf8'
+  )
   return {
     props: {
       topMd: topMd,
