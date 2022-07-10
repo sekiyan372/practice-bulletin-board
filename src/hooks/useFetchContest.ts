@@ -4,7 +4,7 @@ import { useCallback, useState } from 'react'
 
 import { firestore } from '~/database/firebase'
 import type { Contest } from '~/types'
-import { contestConverter, isEnv } from '~/utils'
+import { contestConverter, isEnv, PHOTOCON_DEV, PHOTOCON_PROD } from '~/utils'
 
 export type UseFetchDataType = [
   Contest[],
@@ -24,7 +24,7 @@ export const useFetchContest = (): UseFetchDataType => {
     try {
       const contestRef: CollectionReference<Contest> = collection(
         firestore,
-        isEnv() ? 'photocon_production' : 'photocon_development'
+        isEnv() ? PHOTOCON_PROD : PHOTOCON_DEV
       ).withConverter(contestConverter())
       const response: QuerySnapshot<Contest> = await getDocs(query(contestRef))
       const contest: Contest[] = response.docs.map((doc) => doc.data())

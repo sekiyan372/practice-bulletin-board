@@ -14,7 +14,7 @@ import { useCallback, useState } from 'react'
 
 import { firestore, storage } from '~/database/firebase'
 import type { Album } from '~/types'
-import { albumConverter, isEnv } from '~/utils'
+import { ALBUM_DEV, ALBUM_PROD, albumConverter, isEnv } from '~/utils'
 
 export type UseDataType = {
   data: Album[]
@@ -37,7 +37,7 @@ export const useAlbum = (): UseDataType => {
     try {
       const albumRef: CollectionReference<Album> = collection(
         firestore,
-        isEnv() ? 'album_production' : 'album_development'
+        isEnv() ? ALBUM_PROD : ALBUM_DEV
       ).withConverter(albumConverter())
       const response: QuerySnapshot<Album> = await getDocs(
         query(albumRef, orderBy('createdAt', 'desc'))
@@ -58,11 +58,7 @@ export const useAlbum = (): UseDataType => {
 
       setLoading(true)
       try {
-        const albumRef = doc(
-          firestore,
-          isEnv() ? 'album_production' : 'album_development',
-          id
-        )
+        const albumRef = doc(firestore, isEnv() ? ALBUM_PROD : ALBUM_DEV, id)
         await updateDoc(albumRef, {
           status: status,
           updatedAt: serverTimestamp(),
@@ -83,11 +79,7 @@ export const useAlbum = (): UseDataType => {
 
       setLoading(true)
       try {
-        const albumRef = doc(
-          firestore,
-          isEnv() ? 'album_production' : 'album_development',
-          id
-        )
+        const albumRef = doc(firestore, isEnv() ? ALBUM_PROD : ALBUM_DEV, id)
         await deleteDoc(albumRef)
 
         const imageRef = ref(storage, imagePath)
