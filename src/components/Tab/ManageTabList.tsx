@@ -1,6 +1,6 @@
 import { Tab, TabList, Text } from '@chakra-ui/react'
 import type { Dispatch, FC, SetStateAction } from 'react'
-import { memo } from 'react'
+import { memo, useEffect } from 'react'
 
 import { AlbumStatus } from '~/types'
 
@@ -13,6 +13,11 @@ type Props = {
 
 export const ManageTabList: FC<Props> = memo(
   ({ privateLength, publicLength, blockedLength, handleSelected }) => {
+    //データが変わったらタブの選択を初期化
+    useEffect(() => {
+      handleSelected(AlbumStatus.PRIVATE)
+    }, [privateLength, publicLength, blockedLength, handleSelected])
+
     return (
       <TabList>
         <Tab
