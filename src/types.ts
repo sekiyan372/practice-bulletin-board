@@ -1,3 +1,22 @@
+export type PhotoRally = {
+  id: string
+  ja: {
+    name: string
+    description: string
+    imagePath: string
+    imageUrl: string
+  }
+  en: {
+    name: string
+    description: string
+    imagePath: string
+    imageUrl: string
+  }
+  date: Date
+  createdAt: Date
+  updatedAt: Date
+}
+
 export type Contest = {
   id: string
   comment: string
