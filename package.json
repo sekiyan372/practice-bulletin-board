@@ -24,12 +24,14 @@
     "react-dom": "18.2.0",
     "react-icons": "^4.4.0",
     "react-markdown": "^8.0.3",
+    "react-table": "^7.8.0",
     "recoil": "^0.7.4"
   },
   "devDependencies": {
     "@types/node": "18.0.0",
     "@types/react": "18.0.14",
     "@types/react-dom": "18.0.5",
+    "@types/react-table": "^7.7.12",
     "@types/recoil": "^0.0.9",
     "@typescript-eslint/eslint-plugin": "^5.30.0",
     "@typescript-eslint/parser": "^5.30.0",
