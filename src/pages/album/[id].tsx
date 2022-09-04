@@ -94,7 +94,7 @@ const AlbumPhotoPage: NextPage = () => {
     <>
       <AlertHealthCheckFailed error={error} />
       <Heading textAlign="center" m="50px" color="gray.800">
-        アルバム管理
+        投稿作品一覧
       </Heading>
 
       <Skeleton isLoaded={!!data}>
