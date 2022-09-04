@@ -9,16 +9,18 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react'
+import type { AxiosResponse } from 'axios'
+import axios from 'axios'
 import dayjs from 'dayjs'
 import ja from 'dayjs/locale/ja'
 import type { NextPage } from 'next'
-import { useEffect, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import type { Column } from 'react-table'
 import { useTable } from 'react-table'
+import useSWR from 'swr'
 
 import { AlertHealthCheckFailed } from '~/components/Alert'
-import { usePhotoRally } from '~/hooks/usePhotoRally'
-import type { PhotoRally } from '~/types'
+import type { PhotoRally } from '~/types/photoRallyTypes'
 
 dayjs.locale(ja)
 
@@ -46,13 +48,13 @@ const PhotoRallyIndex: NextPage = () => {
     []
   )
 
-  const { data, loading, error, getPhotoRallies } = usePhotoRally()
+  const fetcher = useCallback(async (url: string): Promise<PhotoRally[]> => {
+    const res: AxiosResponse<{ photoRallies: PhotoRally[] }> = await axios(url)
+    return res.data.photoRallies
+  }, [])
+  const { data, error } = useSWR('/api/photoRallies', fetcher)
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data })
-
-  useEffect(() => {
-    getPhotoRallies()
-  }, [getPhotoRallies])
+    useTable({ columns, data: data ?? [] })
 
   return (
     <>
@@ -62,7 +64,7 @@ const PhotoRallyIndex: NextPage = () => {
       </Heading>
 
       <Box p="10">
-        <Skeleton isLoaded={!loading}>
+        <Skeleton isLoaded={!!data}>
           <Table {...getTableProps()}>
             <Thead>
               {headerGroups.map((headerGroup, index) => (
