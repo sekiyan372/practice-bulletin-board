@@ -8,16 +8,18 @@ import {
   Button,
   Text,
 } from '@chakra-ui/react'
+import axios from 'axios'
+import { useRouter } from 'next/router'
 import type { FC } from 'react'
 import { memo, useCallback, useRef } from 'react'
 import { useRecoilState } from 'recoil'
 
-import { atomFocusAlbum } from '~/recoil'
-import type { Album } from '~/types'
-import { AlbumStatus } from '~/types'
+import { atomFocusPhoto } from '~/recoil'
+import type { AlbumPhoto } from '~/types/albumTypes'
+import { albumStatus } from '~/types/albumTypes'
 
 type Props = {
-  nextStatus: Album['status']
+  nextStatus: AlbumPhoto['status']
   modalState: boolean
   closeModal: () => void
   closeDialog: () => void
@@ -25,18 +27,25 @@ type Props = {
 
 export const AlbumConfirmDialog: FC<Props> = memo(
   ({ nextStatus, modalState, closeModal, closeDialog }) => {
-    const cancelRef = useRef(null)
-    const [focusAlbum, setFocusAlbum] = useRecoilState(atomFocusAlbum)
+    const cancelRef = useRef(null) //キャンセルボタンの参照先
+    const router = useRouter() //ルーター
+    //現在扱っている作品とそのsetter
+    const [focusPhoto, setFocusPhoto] = useRecoilState(atomFocusPhoto)
 
+    //status更新実行時の処理
     const handleClose = useCallback(async () => {
-      if (!focusAlbum) return
+      if (!focusPhoto) return
 
-      await focusAlbum.updateAlbum(focusAlbum.album.id, nextStatus)
-      await focusAlbum.getAlbum()
+      await axios.patch(`/api/albums/${focusPhoto.albumId}`, {
+        id: focusPhoto.photo.id,
+        status: nextStatus,
+      })
+
       closeModal()
       closeDialog()
-      setFocusAlbum(null)
-    }, [focusAlbum, setFocusAlbum, nextStatus, closeModal, closeDialog])
+      setFocusPhoto(null)
+      router.reload()
+    }, [router, focusPhoto, setFocusPhoto, nextStatus, closeModal, closeDialog])
 
     return (
       <>
@@ -60,7 +69,7 @@ export const AlbumConfirmDialog: FC<Props> = memo(
                 px="1"
                 fontWeight="bold"
               >
-                {statusToText(nextStatus)}
+                {nextStatus}
               </Text>
               にしてもよろしいですか？
             </AlertDialogBody>
@@ -75,7 +84,7 @@ export const AlbumConfirmDialog: FC<Props> = memo(
                 colorScheme={statusToColor(nextStatus)}
                 color="white"
               >
-                {statusToText(nextStatus)}
+                {nextStatus}
               </Button>
             </AlertDialogFooter>
           </AlertDialogContent>
@@ -85,26 +94,13 @@ export const AlbumConfirmDialog: FC<Props> = memo(
   }
 )
 
-const statusToText = (status: Album['status']): string => {
+const statusToColor = (status: AlbumPhoto['status']): string => {
   switch (status) {
-    case AlbumStatus.PUBLIC:
-      return '公開'
-    case AlbumStatus.PRIVATE:
-      return '未公開'
-    case AlbumStatus.BLOCK:
-      return 'ブロック'
-    default:
-      return ''
-  }
-}
-
-const statusToColor = (status: Album['status']): string => {
-  switch (status) {
-    case AlbumStatus.PUBLIC:
+    case albumStatus.PUBLIC:
       return 'green'
-    case AlbumStatus.PRIVATE:
+    case albumStatus.PRIVATE:
       return 'blue'
-    case AlbumStatus.BLOCK:
+    case albumStatus.BLOCK:
       return 'red'
     default:
       return ''

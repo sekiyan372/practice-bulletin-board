@@ -18,9 +18,9 @@ import { memo, useCallback, useState } from 'react'
 import { useRecoilValue } from 'recoil'
 
 import { AlbumConfirmDialog } from '~/components/Modal'
-import { atomFocusAlbum } from '~/recoil'
-import type { Album } from '~/types'
-import { AlbumStatus } from '~/types'
+import { atomFocusPhoto } from '~/recoil'
+import type { AlbumPhoto } from '~/types/albumTypes'
+import { albumStatus } from '~/types/albumTypes'
 
 type Props = {
   modalState: boolean
@@ -28,14 +28,16 @@ type Props = {
 }
 
 export const AlbumModal: FC<Props> = memo(({ modalState, handleClose }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const focusAlbum = useRecoilValue(atomFocusAlbum)
-  const [nextStatus, setNextStatus] = useState<Album['status']>(
-    focusAlbum?.album.status ? focusAlbum.album.status : AlbumStatus.PRIVATE
+  const { isOpen, onOpen, onClose } = useDisclosure() //モーダルのいろいろ
+  const focusPhoto = useRecoilValue(atomFocusPhoto) //現在扱っている作品
+  //更新するした場合の次のstatus
+  const [nextStatus, setNextStatus] = useState<AlbumPhoto['status']>(
+    focusPhoto?.photo.status ? focusPhoto.photo.status : albumStatus.PRIVATE
   )
 
+  //ボタンクリック時の処理
   const handleClick = useCallback(
-    (state: Album['status']) => {
+    (state: AlbumPhoto['status']) => {
       setNextStatus(state)
       onOpen()
     },
@@ -50,7 +52,7 @@ export const AlbumModal: FC<Props> = memo(({ modalState, handleClose }) => {
         <ModalBody>
           <Box color="gray.800">
             <Image
-              src={focusAlbum?.album.imageUrl}
+              src={focusPhoto?.photo.imageUrl}
               alt="Picture of photo contest"
               height={{ base: '200', sm: '320', md: '600' }}
               mx="auto"
@@ -65,16 +67,16 @@ export const AlbumModal: FC<Props> = memo(({ modalState, handleClose }) => {
             >
               <Box py="2">
                 <Heading fontSize="xl">投稿者</Heading>
-                <Text color="gray.800">{focusAlbum?.album.name}</Text>
+                <Text color="gray.800">{focusPhoto?.photo.name}</Text>
               </Box>
               <Box py="2">
                 <Heading fontSize="xl">コメント</Heading>
-                <Text color="gray.800">{focusAlbum?.album.comment}</Text>
+                <Text color="gray.800">{focusPhoto?.photo.comment}</Text>
               </Box>
               <Box py="2">
                 <Heading fontSize="xl">投稿日時</Heading>
                 <Text color="gray.600">
-                  {dayjs(focusAlbum?.album.createdAt).format(
+                  {dayjs(focusPhoto?.photo.createdAt).format(
                     'YYYY/MM/DD HH:mm:ss'
                   )}
                 </Text>
@@ -82,21 +84,21 @@ export const AlbumModal: FC<Props> = memo(({ modalState, handleClose }) => {
             </Stack>
 
             <Box textAlign="center" py="10">
-              {focusAlbum?.album.status === 'private' && (
+              {focusPhoto?.photo.status === albumStatus.PRIVATE && (
                 <Stack
                   direction={['column', 'row']}
                   spacing="10"
                   justify="center"
                 >
                   <Button
-                    onClick={() => handleClick(AlbumStatus.PUBLIC)}
+                    onClick={() => handleClick(albumStatus.PUBLIC)}
                     colorScheme="green"
                     width={{ base: '240px', sm: '320px' }}
                   >
                     公開
                   </Button>
                   <Button
-                    onClick={() => handleClick(AlbumStatus.BLOCK)}
+                    onClick={() => handleClick(albumStatus.BLOCK)}
                     colorScheme="red"
                     width={{ base: '240px', sm: '320px' }}
                   >
@@ -104,10 +106,10 @@ export const AlbumModal: FC<Props> = memo(({ modalState, handleClose }) => {
                   </Button>
                 </Stack>
               )}
-              {(focusAlbum?.album.status === 'public' ||
-                focusAlbum?.album.status === 'block') && (
+              {(focusPhoto?.photo.status === albumStatus.PUBLIC ||
+                focusPhoto?.photo.status === albumStatus.BLOCK) && (
                 <Button
-                  onClick={() => handleClick(AlbumStatus.PRIVATE)}
+                  onClick={() => handleClick(albumStatus.PRIVATE)}
                   colorScheme="blue"
                   width={{ base: '240px', sm: '320px' }}
                 >

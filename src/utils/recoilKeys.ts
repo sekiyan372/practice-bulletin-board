@@ -1,3 +1,3 @@
-export enum RecoilAtomKeys {
-  FOCUS_ALBUM = 'focusAlbum',
-}
+export const RecoilAtomKeys = {
+  FOCUS_ALBUM_PHOTO: 'focusAlbumPhoto',
+} as const

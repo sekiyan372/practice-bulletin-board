@@ -17,9 +17,9 @@ export type Album = {
 }
 
 export const albumStatus = {
-  PRIVATE: 'private',
-  PUBLIC: 'public',
-  BLOCK: 'block',
+  PRIVATE: '未公開',
+  PUBLIC: '公開',
+  BLOCK: 'ブロック',
 } as const
 export type AlbumStatus = typeof albumStatus[keyof typeof albumStatus]
 export const albumStatusArray = Object.values(albumStatus)
@@ -33,4 +33,9 @@ export type AlbumPhoto = {
   status: AlbumStatus
   createdAt: Date
   updatedAt: Date
+}
+
+export type FocusPhoto = {
+  albumId: string | string[] | undefined
+  photo: AlbumPhoto
 }
