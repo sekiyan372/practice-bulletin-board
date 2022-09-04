@@ -60,6 +60,7 @@ const ContestIndex: NextPage = () => {
     return res.data.contests
   }, [])
   const { data, error } = useSWR('/api/contests', fetcher)
+
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data: data ?? [] })
 

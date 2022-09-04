@@ -26,21 +26,26 @@ import { albumStatus } from '~/types/albumTypes'
 const AlbumPhotoPage: NextPage = () => {
   const router = useRouter()
   const { id } = router.query
+
   const fetcher = useCallback(async (url: string): Promise<AlbumPhoto[]> => {
     const res: AxiosResponse<{ photos: AlbumPhoto[] }, Error> = await axios(url)
     return res.data.photos
   }, [])
   const { data, error } = useSWR<AlbumPhoto[]>(`/api/albums/${id}`, fetcher)
 
+  //表示しているタブの種類
   const [selectedTab, setSelectedTab] = useState<AlbumStatus>(
     albumStatus.PRIVATE
   )
+
+  //チェックボックスにチェックされた投稿
   const [checkedPhotos, setCheckedPhotos] = useState<
     Map<AlbumPhoto['id'], AlbumPhoto['imagePath']>
   >(new Map())
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
+  //非公開状態の投稿
   const privateData = useMemo<AlbumPhoto[]>(() => {
     if (!data) return []
     return data.filter(
@@ -48,6 +53,7 @@ const AlbumPhotoPage: NextPage = () => {
     )
   }, [data])
 
+  //公開状態の投稿
   const publicData = useMemo<AlbumPhoto[]>(() => {
     if (!data) return []
     return data.filter(
@@ -55,6 +61,7 @@ const AlbumPhotoPage: NextPage = () => {
     )
   }, [data])
 
+  //ブロック状態の投稿
   const blockedData = useMemo<AlbumPhoto[]>(() => {
     if (!data) return []
     return data.filter(
@@ -62,10 +69,7 @@ const AlbumPhotoPage: NextPage = () => {
     )
   }, [data])
 
-  console.log(privateData)
-  console.log(publicData)
-  console.log(blockedData)
-
+  //チェックボックスにチェックをつけた時の挙動
   const handleCheck = useCallback(
     (id: AlbumPhoto['id'], imagePath: AlbumPhoto['imagePath']) => {
       const changedPhotos: Map<AlbumPhoto['id'], AlbumPhoto['imagePath']> =
@@ -80,6 +84,7 @@ const AlbumPhotoPage: NextPage = () => {
     [checkedPhotos]
   )
 
+  //削除実行時の挙動
   const handleClickDelete = useCallback(() => {
     if (checkedPhotos.size === 0 || selectedTab === albumStatus.PUBLIC) return
     onOpen()

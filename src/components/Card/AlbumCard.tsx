@@ -29,11 +29,14 @@ type Props = {
 }
 
 export const AlbumCard: FC<Props> = ({ focusPhoto, handleCheck }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen, onOpen, onClose } = useDisclosure() //モーダルのいろいろ
+  //扱う作品をRecoilのグローバルstateに保管する処理
   const setFocusPhoto: SetterOrUpdater<FocusPhoto | null> =
     useSetRecoilState(atomFocusPhoto)
-  const album: AlbumPhoto = focusPhoto.photo
+  //扱う作品
+  const photo: AlbumPhoto = focusPhoto.photo
 
+  //カードクリック時の処理
   const handleModalClick = useCallback(() => {
     onOpen()
     setFocusPhoto(focusPhoto)
@@ -41,9 +44,9 @@ export const AlbumCard: FC<Props> = ({ focusPhoto, handleCheck }) => {
 
   return (
     <Box m="2">
-      {album.status !== albumStatus.PUBLIC && (
+      {photo.status !== albumStatus.PUBLIC && (
         <Checkbox
-          onChange={() => handleCheck(album.id, album.imagePath)}
+          onChange={() => handleCheck(photo.id, photo.imagePath)}
           colorScheme="red"
           size="lg"
         />
@@ -61,7 +64,7 @@ export const AlbumCard: FC<Props> = ({ focusPhoto, handleCheck }) => {
         }}
       >
         <Image
-          src={album.imageUrl}
+          src={photo.imageUrl}
           alt="Picture of photo contest"
           height="160"
           mx="auto"
@@ -69,9 +72,9 @@ export const AlbumCard: FC<Props> = ({ focusPhoto, handleCheck }) => {
         />
         <Flex pt="3">
           <Icon as={BsFillPersonFill} my="auto" />
-          <Text color="main.orange">{album.name}</Text>
+          <Text color="main.orange">{photo.name}</Text>
         </Flex>
-        <Text>{dayjs(album.createdAt).format('YYYY/MM/DD HH:mm:ss')}</Text>
+        <Text>{dayjs(photo.createdAt).format('YYYY/MM/DD HH:mm:ss')}</Text>
 
         <AlbumModal modalState={isOpen} handleClose={onClose} />
       </Box>

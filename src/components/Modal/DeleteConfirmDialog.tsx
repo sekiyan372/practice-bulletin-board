@@ -23,9 +23,10 @@ type Props = {
 
 export const DeleteConfirmDialog: FC<Props> = memo(
   ({ albumId, photosMapData, isOpen, onClose }) => {
-    const router = useRouter()
-    const cancelRef = useRef(null)
+    const router = useRouter() //ルーター
+    const cancelRef = useRef(null) //キャンセルボタンの参照先
 
+    //削除実行時の処理
     const handleExecuteDelete = useCallback(() => {
       photosMapData.forEach(
         async (value: AlbumPhoto['imagePath'], key: AlbumPhoto['id']) => {

@@ -28,7 +28,6 @@ export const getAlbums = async (): Promise<Album[]> => {
   //扱いやすいようにデータ加工
   const albums: Album[] = snapShot.docs.map((doc) => doc.data())
 
-  //データ取得成功時の返り値
   return albums
 }
 
@@ -44,7 +43,7 @@ export const getPhotosByAlbumId = async (
     .collection(PHOTO)
     .withConverter(albumPhotoConverter())
 
-  //firestoreから投稿の中で公開状態になっているものだけを取得
+  //firestoreから取得したデータ
   const snapShot: QuerySnapshot<AlbumPhoto> = await albumPhotosRef
     .orderBy('createdAt', 'desc')
     .get()
@@ -52,7 +51,6 @@ export const getPhotosByAlbumId = async (
   //扱いやすいようにデータ加工
   const albumPhotos: AlbumPhoto[] = snapShot.docs.map((doc) => doc.data())
 
-  //データ取得成功時のレスポンス
   return albumPhotos
 }
 
@@ -63,12 +61,14 @@ export const updatePhotoById = async (
 ) => {
   if (!firestore) throw new Error()
 
+  //firestoreのdocumentの参照情報
   const albumPhotoRef: DocumentReference<DocumentData> = firestore
     .collection(isEnv() ? ALBUM_PROD : ALBUM_DEV)
     .doc(aid)
     .collection(PHOTO)
     .doc(id)
 
+  //status変更
   await albumPhotoRef.update({
     status: albumStatusArray.indexOf(status),
     updatedAt: FieldValue.serverTimestamp(),
@@ -82,13 +82,16 @@ export const deletePhotoById = async (
 ) => {
   if (!firestore || !storage) throw new Error()
 
-  const albumPhotoRef: DocumentReference = firestore
+  //firestoreのdocumentの参照情報
+  const albumPhotoRef: DocumentReference<DocumentData> = firestore
     .collection(isEnv() ? ALBUM_PROD : ALBUM_DEV)
     .doc(aid)
     .collection(PHOTO)
     .doc(id)
+
+  //firestoreから対象のdocumentを削除
   await albumPhotoRef.delete()
 
-  const imageFile = storage.bucket().file(imagePath)
-  await imageFile.delete()
+  //storageから対象の画像を削除
+  await storage.bucket().file(imagePath).delete()
 }

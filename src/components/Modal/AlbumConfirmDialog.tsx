@@ -27,10 +27,12 @@ type Props = {
 
 export const AlbumConfirmDialog: FC<Props> = memo(
   ({ nextStatus, modalState, closeModal, closeDialog }) => {
-    const cancelRef = useRef(null)
-    const router = useRouter()
+    const cancelRef = useRef(null) //キャンセルボタンの参照先
+    const router = useRouter() //ルーター
+    //現在扱っている作品とそのsetter
     const [focusPhoto, setFocusPhoto] = useRecoilState(atomFocusPhoto)
 
+    //status更新実行時の処理
     const handleClose = useCallback(async () => {
       if (!focusPhoto) return
 

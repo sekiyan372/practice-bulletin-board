@@ -28,12 +28,14 @@ type Props = {
 }
 
 export const AlbumModal: FC<Props> = memo(({ modalState, handleClose }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const focusPhoto = useRecoilValue(atomFocusPhoto)
+  const { isOpen, onOpen, onClose } = useDisclosure() //モーダルのいろいろ
+  const focusPhoto = useRecoilValue(atomFocusPhoto) //現在扱っている作品
+  //更新するした場合の次のstatus
   const [nextStatus, setNextStatus] = useState<AlbumPhoto['status']>(
     focusPhoto?.photo.status ? focusPhoto.photo.status : albumStatus.PRIVATE
   )
 
+  //ボタンクリック時の処理
   const handleClick = useCallback(
     (state: AlbumPhoto['status']) => {
       setNextStatus(state)

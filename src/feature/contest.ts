@@ -24,7 +24,6 @@ export const getContests = async (): Promise<Contest[]> => {
   //扱いやすいようにデータ加工
   const contests: Contest[] = snapShot.docs.map((doc) => doc.data())
 
-  //データ取得成功時の返り値
   return contests
 }
 
@@ -47,8 +46,6 @@ export const getPhotosByContestId = async (
 
   //扱いやすいようにデータ加工
   const contestPhotos: ContestPhoto[] = snapShot.docs.map((doc) => doc.data())
-  console.log(contestPhotos)
 
-  //データ取得成功時のレスポンス
   return contestPhotos
 }

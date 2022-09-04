@@ -24,6 +24,5 @@ export const getPhotoRallies = async (): Promise<PhotoRally[]> => {
   //扱いやすいようにデータ加工
   const photoRallies: PhotoRally[] = snapShot.docs.map((doc) => doc.data())
 
-  //データ取得成功時の返り値
   return photoRallies
 }
