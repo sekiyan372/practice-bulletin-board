@@ -66,7 +66,7 @@ const ContestIndex: NextPage = () => {
     <>
       <AlertHealthCheckFailed error={error} />
       <Heading textAlign="center" m="50px" color="gray.800">
-        フォトコンテスト管理
+        アルバム一覧
       </Heading>
 
       <Box p="10">

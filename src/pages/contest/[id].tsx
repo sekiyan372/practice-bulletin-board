@@ -26,8 +26,9 @@ const Contest: NextPage = () => {
     <>
       <AlertHealthCheckFailed error={error} />
       <Heading textAlign="center" m="50px" color="gray.800">
-        フォトコンテスト管理
+        応募作品一覧
       </Heading>
+
       <Box>
         <Skeleton isLoaded={!!data}>
           <Flex flexWrap="wrap" justifyContent="center">

@@ -60,7 +60,7 @@ const PhotoRallyIndex: NextPage = () => {
     <>
       <AlertHealthCheckFailed error={error} />
       <Heading textAlign="center" m="50px" color="gray.800">
-        フォトラリー管理
+        フォトラリー一覧
       </Heading>
 
       <Box p="10">
