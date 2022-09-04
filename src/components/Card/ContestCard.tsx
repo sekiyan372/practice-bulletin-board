@@ -1,21 +1,21 @@
 import { Box, Image, Text, useDisclosure } from '@chakra-ui/react'
 import type { FC } from 'react'
 
-import { PhotoconModal } from '~/components/Modal'
-import { Contest } from '~/types'
+import { ContestModal } from '~/components/Modal'
+import { ContestPhoto } from '~/types/contestTypes'
 
 type Props = {
-  contest: Contest
+  photo: ContestPhoto
   index: number
 }
 
-export const PhotoconCard: FC<Props> = ({ contest, index }) => {
+export const ContestCard: FC<Props> = ({ photo, index }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (
     <Box textAlign="center" p="10px" pb="50px">
       <Image
-        src={contest.image}
+        src={photo.imageUrl}
         alt="Picture of photo contest"
         height="160"
         onClick={onOpen}
@@ -29,7 +29,7 @@ export const PhotoconCard: FC<Props> = ({ contest, index }) => {
         {index}
       </Text>
 
-      <PhotoconModal contest={contest} isOpen={isOpen} onClose={onClose} />
+      <ContestModal photo={photo} isOpen={isOpen} onClose={onClose} />
     </Box>
   )
 }

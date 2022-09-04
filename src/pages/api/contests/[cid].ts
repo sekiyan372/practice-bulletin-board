@@ -1,15 +1,20 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-import { getContests } from '~/feature/contest'
-import type { Contest } from '~/types/contestTypes'
+import { getPhotosByContestId } from '~/feature/contest'
+import type { ContestPhoto } from '~/types/contestTypes'
 
-const getHandler = async (_: NextApiRequest, res: NextApiResponse) => {
+const getHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+  const { cid } = req.query //urlに埋め込まれたid
+
   try {
+    //idが配列を許容するので、配列の時はエラーを吐き出す
+    if (Array.isArray(cid) || cid === undefined) throw 'id is notional value.'
+
     //アルバムの投稿作品を取得
-    const contests: Contest[] = await getContests()
+    const photos: ContestPhoto[] = await getPhotosByContestId(cid)
 
     //データ取得成功時のレスポンス
-    res.status(200).json({ contests })
+    res.status(200).json({ photos })
   } catch (e) {
     //データ取得失敗のレスポンス
     res.status(500).send({ httpStatus: 500, message: 'failed to fetch data' })

@@ -4,9 +4,9 @@ import type {
 } from 'firebase-admin/firestore'
 
 import { firestore } from '~/database/firebaseAdmin'
+import { albumConverter } from '~/feature/converter/albumConverter'
 import type { Album } from '~/types/albumTypes'
 import { ALBUM_DEV, ALBUM_PROD, isEnv } from '~/utils'
-import { albumConverter } from '~/utils/converter/albumConverter'
 
 export const getAlbums = async (): Promise<Album[]> => {
   if (!firestore) throw new Error()

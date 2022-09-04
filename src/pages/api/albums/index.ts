@@ -17,10 +17,10 @@ const getHandler = async (_: NextApiRequest, res: NextApiResponse) => {
 }
 
 //HTTPメソッドに合わせて分岐し、期待値外のメソッドが送られてきた場合は405エラーを返却する
-const handler = (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case 'GET':
-      getHandler(req, res)
+      await getHandler(req, res)
       break
     default:
       res

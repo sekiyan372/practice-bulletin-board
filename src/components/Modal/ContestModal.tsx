@@ -10,15 +10,15 @@ import {
 } from '@chakra-ui/react'
 import type { FC } from 'react'
 
-import type { Contest } from '~/types'
+import type { ContestPhoto } from '~/types/contestTypes'
 
 type Props = {
-  contest: Contest
+  photo: ContestPhoto
   isOpen: boolean
   onClose: () => void
 }
 
-export const PhotoconModal: FC<Props> = ({ contest, isOpen, onClose }) => {
+export const ContestModal: FC<Props> = ({ photo, isOpen, onClose }) => {
   return (
     <Modal size="5xl" isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -27,16 +27,16 @@ export const PhotoconModal: FC<Props> = ({ contest, isOpen, onClose }) => {
         <ModalBody>
           <Box textAlign="center" pt="50px">
             <Image
-              src={contest.image}
+              src={photo.imageUrl}
               alt="Picture of photo contest"
               height={480}
               mx="auto"
             />
             <Text fontSize="20px" fontWeight="bold" color="gray.800" py="10px">
-              {contest.name}
+              {photo.name}
             </Text>
             <Text fontSize="16px" color="gray.600" pb="10px">
-              {contest.comment}
+              {photo.comment}
             </Text>
           </Box>
         </ModalBody>
