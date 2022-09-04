@@ -4,3 +4,6 @@ dist
 /out/
 next.config.js
 yarn.lock
+.eslintignore
+.prettierignore
+.gitkeep

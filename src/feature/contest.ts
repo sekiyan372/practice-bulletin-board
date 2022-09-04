@@ -29,7 +29,7 @@ export const getContests = async (): Promise<Contest[]> => {
 }
 
 export const getPhotosByContestId = async (
-  cid: string
+  cid: Contest['id']
 ): Promise<ContestPhoto[]> => {
   if (!firestore) throw new Error()
 

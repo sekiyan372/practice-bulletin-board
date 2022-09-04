@@ -7,32 +7,37 @@ import {
   AlertDialogOverlay,
   Button,
 } from '@chakra-ui/react'
+import axios from 'axios'
+import { useRouter } from 'next/router'
 import type { FC } from 'react'
 import { memo, useCallback, useRef } from 'react'
 
-import { Album } from '~/types'
+import { AlbumPhoto } from '~/types/albumTypes'
 
 type Props = {
-  albumsMapData: Map<Album['id'], Album['imagePath']>
+  albumId: string | string[] | undefined
+  photosMapData: Map<AlbumPhoto['id'], AlbumPhoto['imagePath']>
   isOpen: boolean
   onClose: () => void
-  getAlbums: () => Promise<void>
-  deleteAlbum: (id: string, imagePath: string) => Promise<void>
 }
 
 export const DeleteConfirmDialog: FC<Props> = memo(
-  ({ albumsMapData, isOpen, onClose, getAlbums, deleteAlbum }) => {
+  ({ albumId, photosMapData, isOpen, onClose }) => {
+    const router = useRouter()
     const cancelRef = useRef(null)
 
-    const handleExecuteDelete = useCallback(async () => {
-      await albumsMapData.forEach(
-        (value: Album['imagePath'], key: Album['id']) => {
-          deleteAlbum(key, value)
+    const handleExecuteDelete = useCallback(() => {
+      photosMapData.forEach(
+        async (value: AlbumPhoto['imagePath'], key: AlbumPhoto['id']) => {
+          await axios.delete(`/api/albums/${albumId}`, {
+            params: { id: key, path: value },
+          })
         }
       )
-      await getAlbums()
+
       onClose()
-    }, [albumsMapData, getAlbums, deleteAlbum, onClose])
+      router.reload()
+    }, [router, albumId, photosMapData, onClose])
 
     return (
       <>

@@ -1,6 +1,8 @@
 import { cert, getApps, initializeApp } from 'firebase-admin/app'
 import type { Firestore } from 'firebase-admin/firestore'
 import { getFirestore } from 'firebase-admin/firestore'
+import type { Storage } from 'firebase-admin/storage'
+import { getStorage } from 'firebase-admin/storage'
 
 if (!getApps().length) {
   initializeApp({
@@ -9,7 +11,9 @@ if (!getApps().length) {
       privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
       clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
     }),
+    storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
   })
 }
 
 export const firestore: Firestore = getFirestore()
+export const storage: Storage = getStorage()

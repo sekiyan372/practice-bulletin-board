@@ -14,6 +14,7 @@ import axios from 'axios'
 import dayjs from 'dayjs'
 import ja from 'dayjs/locale/ja'
 import type { NextPage } from 'next'
+import NextLink from 'next/link'
 import { useCallback, useMemo } from 'react'
 import type { Column } from 'react-table'
 import { useTable } from 'react-table'
@@ -85,13 +86,22 @@ const ContestIndex: NextPage = () => {
               {rows.map((row, rowIndex) => {
                 prepareRow(row)
                 return (
-                  <Tr {...row.getRowProps()} key={rowIndex}>
-                    {row.cells.map((cell, cellIndex) => (
-                      <Td {...cell.getCellProps()} key={cellIndex}>
-                        {cell.render('Cell')}
-                      </Td>
-                    ))}
-                  </Tr>
+                  <NextLink
+                    href={`/album/${row.original.id}`}
+                    passHref
+                    key={rowIndex}
+                  >
+                    <Tr
+                      {...row.getRowProps()}
+                      _hover={{ cursor: 'pointer', opacity: 0.5 }}
+                    >
+                      {row.cells.map((cell, cellIndex) => (
+                        <Td {...cell.getCellProps()} key={cellIndex}>
+                          {cell.render('Cell')}
+                        </Td>
+                      ))}
+                    </Tr>
+                  </NextLink>
                 )
               })}
             </Tbody>

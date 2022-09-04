@@ -11,31 +11,37 @@ import dayjs from 'dayjs'
 import type { FC } from 'react'
 import { useCallback } from 'react'
 import { BsFillPersonFill } from 'react-icons/bs'
+import type { SetterOrUpdater } from 'recoil'
 import { useSetRecoilState } from 'recoil'
 
 import { AlbumModal } from '~/components/Modal'
-import { atomFocusAlbum } from '~/recoil'
-import type { Album, FocusAlbum } from '~/types'
-import { AlbumStatus } from '~/types'
+import { atomFocusPhoto } from '~/recoil'
+import type { FocusPhoto } from '~/types/albumTypes'
+import type { AlbumPhoto } from '~/types/albumTypes'
+import { albumStatus } from '~/types/albumTypes'
 
 type Props = {
-  focusAlbum: FocusAlbum
-  handleCheck: (id: Album['id'], imagePath: Album['imagePath']) => void
+  focusPhoto: FocusPhoto
+  handleCheck: (
+    id: AlbumPhoto['id'],
+    imagePath: AlbumPhoto['imagePath']
+  ) => void
 }
 
-export const AlbumCard: FC<Props> = ({ focusAlbum, handleCheck }) => {
+export const AlbumCard: FC<Props> = ({ focusPhoto, handleCheck }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const setFocusAlbum = useSetRecoilState(atomFocusAlbum)
-  const album = focusAlbum.album
+  const setFocusPhoto: SetterOrUpdater<FocusPhoto | null> =
+    useSetRecoilState(atomFocusPhoto)
+  const album: AlbumPhoto = focusPhoto.photo
 
   const handleModalClick = useCallback(() => {
     onOpen()
-    setFocusAlbum(focusAlbum)
-  }, [onOpen, setFocusAlbum, focusAlbum])
+    setFocusPhoto(focusPhoto)
+  }, [onOpen, setFocusPhoto, focusPhoto])
 
   return (
     <Box m="2">
-      {album.status !== AlbumStatus.PUBLIC && (
+      {album.status !== albumStatus.PUBLIC && (
         <Checkbox
           onChange={() => handleCheck(album.id, album.imagePath)}
           colorScheme="red"

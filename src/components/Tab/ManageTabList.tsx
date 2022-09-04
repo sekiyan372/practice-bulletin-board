@@ -2,7 +2,8 @@ import { Tab, TabList, Text } from '@chakra-ui/react'
 import type { Dispatch, FC, SetStateAction } from 'react'
 import { memo, useEffect } from 'react'
 
-import { AlbumStatus } from '~/types'
+import type { AlbumStatus } from '~/types/albumTypes'
+import { albumStatus } from '~/types/albumTypes'
 
 type Props = {
   privateLength: number
@@ -15,14 +16,14 @@ export const ManageTabList: FC<Props> = memo(
   ({ privateLength, publicLength, blockedLength, handleSelected }) => {
     //データが変わったらタブの選択を初期化
     useEffect(() => {
-      handleSelected(AlbumStatus.PRIVATE)
+      handleSelected(albumStatus.PRIVATE)
     }, [privateLength, publicLength, blockedLength, handleSelected])
 
     return (
       <TabList>
         <Tab
           color="gray.800"
-          onClick={() => handleSelected(AlbumStatus.PRIVATE)}
+          onClick={() => handleSelected(albumStatus.PRIVATE)}
         >
           未公開
           <Text
@@ -38,7 +39,7 @@ export const ManageTabList: FC<Props> = memo(
         </Tab>
         <Tab
           color="gray.800"
-          onClick={() => handleSelected(AlbumStatus.PUBLIC)}
+          onClick={() => handleSelected(albumStatus.PUBLIC)}
         >
           公開
           <Text
@@ -52,7 +53,7 @@ export const ManageTabList: FC<Props> = memo(
             {publicLength}
           </Text>
         </Tab>
-        <Tab color="gray.800" onClick={() => handleSelected(AlbumStatus.BLOCK)}>
+        <Tab color="gray.800" onClick={() => handleSelected(albumStatus.BLOCK)}>
           ブロック
           <Text
             display="inline"

@@ -4,7 +4,7 @@ import type {
 } from 'firebase-admin/firestore'
 
 import { firestore } from '~/database/firebaseAdmin'
-import { photoRallyConverter } from '~/feature/converter/photoRallyConverter'
+import { photoRallyConverter } from '~/feature/converter'
 import type { PhotoRally } from '~/types/photoRallyTypes'
 import { isEnv, PHOTO_RALLY_DEV, PHOTO_RALLY_PROD } from '~/utils'
 
