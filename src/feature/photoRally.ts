@@ -4,9 +4,9 @@ import type {
 } from 'firebase-admin/firestore'
 
 import { firestore } from '~/database/firebaseAdmin'
+import { photoRallyConverter } from '~/feature/converter/photoRallyConverter'
 import type { PhotoRally } from '~/types/photoRallyTypes'
 import { isEnv, PHOTO_RALLY_DEV, PHOTO_RALLY_PROD } from '~/utils'
-import { photoRallyConverter } from '~/utils/converter/photoRallyConverter'
 
 export const getPhotoRallies = async (): Promise<PhotoRally[]> => {
   if (!firestore) throw new Error()

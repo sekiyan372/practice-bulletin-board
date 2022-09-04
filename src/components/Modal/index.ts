@@ -1,4 +1,5 @@
 export { PhotoconModal } from './PhotoconModal'
+export { ContestModal } from './ContestModal'
 export { AlbumModal } from './AlbumModal'
 export { AlbumConfirmDialog } from './AlbumConfirmDialog'
 export { DeleteConfirmDialog } from './DeleteConfirmDialog'
