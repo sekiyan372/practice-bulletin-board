@@ -13,6 +13,7 @@ export const photoRallyConverter = (): FirestoreDataConverter<PhotoRally> => ({
     return {
       ja: value.ja,
       en: value.en,
+      spotIds: value.spotIds,
       date: value.date,
       createdAt: FieldValue.serverTimestamp(),
       updatedAt: FieldValue.serverTimestamp(),
@@ -24,6 +25,7 @@ export const photoRallyConverter = (): FirestoreDataConverter<PhotoRally> => ({
       id: snapshot.id,
       ja: data.ja,
       en: data.en,
+      spotIds: data.spotIds,
       date: data.date.toDate(),
       createdAt: data.createdAt.toDate(),
       updatedAt: data.updatedAt.toDate(),

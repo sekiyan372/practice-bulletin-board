@@ -12,6 +12,7 @@ export type PhotoRally = {
     imagePath: string
     imageUrl: string
   }
+  spotIds: string[]
   date: Date
   createdAt: Date
   updatedAt: Date
