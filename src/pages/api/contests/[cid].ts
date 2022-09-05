@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-import { getPhotosByContestId } from '~/feature/contest'
+import { getContestPhotos } from '~/feature/contestPhoto'
 import type { ContestPhoto } from '~/types/contestTypes'
 
 const getHandler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -11,7 +11,7 @@ const getHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (Array.isArray(cid) || cid === undefined) throw 'id is notional value.'
 
     //アルバムの投稿作品を取得
-    const photos: ContestPhoto[] = await getPhotosByContestId(cid)
+    const photos: ContestPhoto[] = await getContestPhotos(cid)
 
     //データ取得成功時のレスポンス
     res.status(200).json({ photos })
