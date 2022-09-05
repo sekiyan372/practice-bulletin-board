@@ -6,8 +6,8 @@ export {
   ALBUM_DEV,
   CONTEST_PROD,
   CONTEST_DEV,
-  PHOTOCON_PROD,
-  PHOTOCON_DEV,
+  SPOT_PROD,
+  SPOT_DEV,
 } from './env'
-export { PHOTO, SPOTS } from './constant'
+export { PHOTO, SPOTS, TEXT_START, TEXT_END } from './constant'
 export { RecoilAtomKeys } from './recoilKeys'

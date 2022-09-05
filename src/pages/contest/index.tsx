@@ -59,7 +59,7 @@ const ContestIndex: NextPage = () => {
     const res: AxiosResponse<{ contests: Contest[] }> = await axios(url)
     return res.data.contests
   }, [])
-  const { data, error } = useSWR('/api/contests', fetcher)
+  const { data, error } = useSWR<Contest[], Error>('/api/contests', fetcher)
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data: data ?? [] })

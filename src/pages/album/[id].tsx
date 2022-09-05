@@ -31,7 +31,10 @@ const AlbumPhotoPage: NextPage = () => {
     const res: AxiosResponse<{ photos: AlbumPhoto[] }, Error> = await axios(url)
     return res.data.photos
   }, [])
-  const { data, error } = useSWR<AlbumPhoto[]>(`/api/albums/${id}`, fetcher)
+  const { data, error } = useSWR<AlbumPhoto[], Error>(
+    `/api/albums/${id}`,
+    fetcher
+  )
 
   //表示しているタブの種類
   const [selectedTab, setSelectedTab] = useState<AlbumStatus>(

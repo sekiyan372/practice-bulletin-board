@@ -14,40 +14,34 @@ import axios from 'axios'
 import dayjs from 'dayjs'
 import ja from 'dayjs/locale/ja'
 import type { NextPage } from 'next'
-import NextLink from 'next/link'
 import { useCallback, useMemo } from 'react'
 import type { Column } from 'react-table'
 import { useTable } from 'react-table'
 import useSWR from 'swr'
 
 import { AlertHealthCheckFailed } from '~/components/Alert'
-import type { Album } from '~/types/albumTypes'
+import type { Spot } from '~/types/photoRallyTypes'
+import { TEXT_END, TEXT_START } from '~/utils'
 
 dayjs.locale(ja)
 
-const ContestIndex: NextPage = () => {
-  const columns = useMemo<Column<Album>[]>(
+const PhotoRallyIndex: NextPage = () => {
+  const columns = useMemo<Column<Spot>[]>(
     () => [
       {
-        Header: 'タイトル',
-        accessor: (params: Album) => params.ja.name,
+        Header: '名前',
+        accessor: (params: Spot) => params.ja.name,
         disableSortBy: true,
       },
       {
-        Header: '開始日時',
-        accessor: (params: Album) =>
-          dayjs(params.startAt).format('YYYY/MM/DD HH:mm:ss'),
-        disableSortBy: true,
-      },
-      {
-        Header: '終了日時',
-        accessor: (params: Album) =>
-          dayjs(params.endAt).format('YYYY/MM/DD HH:mm:ss'),
+        Header: '説明',
+        accessor: (params: Spot) =>
+          `${params.ja.description.substring(TEXT_START, TEXT_END)}...`,
         disableSortBy: true,
       },
       {
         Header: '作成日',
-        accessor: (params: Album) =>
+        accessor: (params: Spot) =>
           dayjs(params.createdAt).format('YYYY/MM/DD HH:mm:ss'),
         disableSortBy: true,
       },
@@ -55,12 +49,11 @@ const ContestIndex: NextPage = () => {
     []
   )
 
-  const fetcher = useCallback(async (url: string): Promise<Album[]> => {
-    const res: AxiosResponse<{ albums: Album[] }> = await axios(url)
-    return res.data.albums
+  const fetcher = useCallback(async (url: string): Promise<Spot[]> => {
+    const res: AxiosResponse<{ photoRallies: Spot[] }> = await axios(url)
+    return res.data.photoRallies
   }, [])
-  const { data, error } = useSWR<Album[], Error>('/api/albums', fetcher)
-
+  const { data, error } = useSWR<Spot[], Error>('/api/spots', fetcher)
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data: data ?? [] })
 
@@ -68,7 +61,7 @@ const ContestIndex: NextPage = () => {
     <>
       <AlertHealthCheckFailed error={error} />
       <Heading textAlign="center" m="50px" color="gray.800">
-        アルバム一覧
+        スポット一覧
       </Heading>
 
       <Box p="10">
@@ -87,22 +80,13 @@ const ContestIndex: NextPage = () => {
               {rows.map((row, rowIndex) => {
                 prepareRow(row)
                 return (
-                  <NextLink
-                    href={`/album/${row.original.id}`}
-                    passHref
-                    key={rowIndex}
-                  >
-                    <Tr
-                      {...row.getRowProps()}
-                      _hover={{ cursor: 'pointer', opacity: 0.5 }}
-                    >
-                      {row.cells.map((cell, cellIndex) => (
-                        <Td {...cell.getCellProps()} key={cellIndex}>
-                          {cell.render('Cell')}
-                        </Td>
-                      ))}
-                    </Tr>
-                  </NextLink>
+                  <Tr {...row.getRowProps()} key={rowIndex}>
+                    {row.cells.map((cell, cellIndex) => (
+                      <Td {...cell.getCellProps()} key={cellIndex}>
+                        {cell.render('Cell')}
+                      </Td>
+                    ))}
+                  </Tr>
                 )
               })}
             </Tbody>
@@ -113,4 +97,4 @@ const ContestIndex: NextPage = () => {
   )
 }
 
-export default ContestIndex
+export default PhotoRallyIndex
