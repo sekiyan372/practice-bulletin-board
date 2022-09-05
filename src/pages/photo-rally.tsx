@@ -52,7 +52,10 @@ const PhotoRallyIndex: NextPage = () => {
     const res: AxiosResponse<{ photoRallies: PhotoRally[] }> = await axios(url)
     return res.data.photoRallies
   }, [])
-  const { data, error } = useSWR('/api/photoRallies', fetcher)
+  const { data, error } = useSWR<PhotoRally[], Error>(
+    '/api/photoRallies',
+    fetcher
+  )
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data: data ?? [] })
 

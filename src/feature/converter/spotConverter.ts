@@ -6,27 +6,25 @@ import type {
 } from 'firebase-admin/firestore'
 import { FieldValue } from 'firebase-admin/firestore'
 
-import { PhotoRally } from '~/types/photoRallyTypes'
+import { Spot } from '~/types/photoRallyTypes'
 
-export const photoRallyConverter = (): FirestoreDataConverter<PhotoRally> => ({
-  toFirestore(value: WithFieldValue<PhotoRally>): DocumentData {
+export const spotConverter = (): FirestoreDataConverter<Spot> => ({
+  toFirestore(value: WithFieldValue<Spot>): DocumentData {
     return {
+      image: value.image,
       ja: value.ja,
       en: value.en,
-      spotIds: value.spotIds,
-      date: value.date,
       createdAt: FieldValue.serverTimestamp(),
       updatedAt: FieldValue.serverTimestamp(),
     }
   },
-  fromFirestore(snapshot: QueryDocumentSnapshot<DocumentData>): PhotoRally {
+  fromFirestore(snapshot: QueryDocumentSnapshot<DocumentData>): Spot {
     const data = snapshot.data()
     return {
       id: snapshot.id,
+      image: data.image,
       ja: data.ja,
       en: data.en,
-      spotIds: data.spotIds,
-      date: data.date.toDate(),
       createdAt: data.createdAt.toDate(),
       updatedAt: data.updatedAt.toDate(),
     }

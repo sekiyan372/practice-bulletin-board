@@ -20,7 +20,10 @@ const Contest: NextPage = () => {
     )
     return res.data.photos
   }, [])
-  const { data, error } = useSWR<ContestPhoto[]>(`/api/contests/${id}`, fetcher)
+  const { data, error } = useSWR<ContestPhoto[], Error>(
+    `/api/contests/${id}`,
+    fetcher
+  )
 
   return (
     <>

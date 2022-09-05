@@ -12,6 +12,7 @@ export type PhotoRally = {
     imagePath: string
     imageUrl: string
   }
+  spotIds: string[]
   date: Date
   createdAt: Date
   updatedAt: Date
@@ -31,4 +32,6 @@ export type Spot = {
     name: string
     description: string
   }
+  createdAt: Date
+  updatedAt: Date
 }

@@ -14,7 +14,7 @@ import { memo } from 'react'
 import { BsFillCameraFill } from 'react-icons/bs'
 import { FaAward, FaHome } from 'react-icons/fa'
 import { GiHamburgerMenu } from 'react-icons/gi'
-import { MdPhotoAlbum } from 'react-icons/md'
+import { MdLocationPin, MdPhotoAlbum } from 'react-icons/md'
 
 import { HeaderLink, HeaderMenuLink } from './HeaderLink'
 
@@ -23,6 +23,7 @@ const links = [
   { href: '/photo-rally', icon: BsFillCameraFill, text: 'フォトラリー' },
   { href: '/contest', icon: FaAward, text: 'コンテスト' },
   { href: '/album', icon: MdPhotoAlbum, text: 'アルバム' },
+  { href: '/spot', icon: MdLocationPin, text: 'スポット' },
 ]
 
 export const Header: FC = memo(() => {
