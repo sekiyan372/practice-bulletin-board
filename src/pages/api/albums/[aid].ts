@@ -1,10 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import {
-  deletePhotoById,
-  getPhotosByAlbumId,
-  updatePhotoById,
-} from '~/feature/album'
+  deleteAlbumPhoto,
+  getAlbumPhotos,
+  updateAlbumPhoto,
+} from '~/feature/albumPhoto'
 import type { AlbumPhoto } from '~/types/albumTypes'
 
 const getHandler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -15,7 +15,7 @@ const getHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (Array.isArray(aid) || aid === undefined) throw 'id is notional value.'
 
     //アルバムの投稿作品を取得
-    const photos: AlbumPhoto[] = await getPhotosByAlbumId(aid)
+    const photos: AlbumPhoto[] = await getAlbumPhotos(aid)
 
     //データ取得成功時のレスポンス
     res.status(200).json({ photos })
@@ -40,7 +40,7 @@ const patchHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     )
       throw 'id is notional value.'
 
-    await updatePhotoById(aid, id, status)
+    await updateAlbumPhoto(aid, id, status)
 
     res.status(200).send({ httpStatus: 200, message: 'update complete' })
   } catch (e) {
@@ -63,7 +63,7 @@ const deleteHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     )
       throw 'id is notional value.'
 
-    await deletePhotoById(aid, id, path)
+    await deleteAlbumPhoto(aid, id, path)
 
     res.status(200).send({ httpStatus: 200, message: 'deletion complete' })
   } catch (e) {
