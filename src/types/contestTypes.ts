@@ -37,3 +37,8 @@ export type ContestPhoto = {
   createdAt: Date
   updatedAt: Date
 }
+
+export type AwardPhoto = {
+  contestId: string | string[] | undefined
+  photo: ContestPhoto
+}
