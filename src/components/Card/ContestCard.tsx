@@ -29,7 +29,7 @@ export const ContestCard: FC<Props> = ({ photo, index }) => {
         {index}
       </Text>
 
-      <ContestModal photo={photo} isOpen={isOpen} onClose={onClose} />
+      <ContestModal photo={photo} modalState={isOpen} handleClose={onClose} />
     </Box>
   )
 }
