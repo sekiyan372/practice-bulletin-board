@@ -1,11 +1,15 @@
 import type {
   CollectionReference,
+  DocumentData,
+  DocumentReference,
   QuerySnapshot,
 } from 'firebase-admin/firestore'
+import { FieldValue } from 'firebase-admin/firestore'
 
 import { firestore } from '~/database/firebaseAdmin'
 import { contestPhotoConverter } from '~/feature/converter'
 import type { Contest, ContestPhoto } from '~/types/contestTypes'
+import { contestAwardArray } from '~/types/contestTypes'
 import { CONTEST_DEV, CONTEST_PROD, isEnv, PHOTO } from '~/utils'
 
 export const getContestPhotos = async (
@@ -29,4 +33,25 @@ export const getContestPhotos = async (
   const contestPhotos: ContestPhoto[] = snapShot.docs.map((doc) => doc.data())
 
   return contestPhotos
+}
+
+export const updateContestPhoto = async (
+  cid: Contest['id'],
+  id: ContestPhoto['id'],
+  status: ContestPhoto['award']
+) => {
+  if (!firestore) throw new Error()
+
+  //firestoreのdocumentの参照情報
+  const contestPhotoRef: DocumentReference<DocumentData> = firestore
+    .collection(isEnv() ? CONTEST_PROD : CONTEST_DEV)
+    .doc(cid)
+    .collection(PHOTO)
+    .doc(id)
+
+  //status変更
+  await contestPhotoRef.update({
+    status: contestAwardArray.indexOf(status),
+    updatedAt: FieldValue.serverTimestamp(),
+  })
 }

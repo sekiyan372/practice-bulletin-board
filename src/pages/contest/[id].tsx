@@ -36,7 +36,14 @@ const Contest: NextPage = () => {
         <Skeleton isLoaded={!!data}>
           <Flex flexWrap="wrap" justifyContent="center">
             {data?.map((photo, index) => (
-              <ContestCard key={photo.id} photo={photo} index={index + 1} />
+              <ContestCard
+                key={photo.id}
+                awardFocusPhoto={{
+                  contestId: id,
+                  photo: photo,
+                }}
+                index={index + 1}
+              />
             ))}
           </Flex>
         </Skeleton>

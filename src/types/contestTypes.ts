@@ -38,7 +38,7 @@ export type ContestPhoto = {
   updatedAt: Date
 }
 
-export type AwardPhoto = {
+export type AwardFocusPhoto = {
   contestId: string | string[] | undefined
   photo: ContestPhoto
 }

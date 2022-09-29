@@ -14,7 +14,7 @@ import type { FC } from 'react'
 import { memo, useCallback, useRef } from 'react'
 import { useRecoilState } from 'recoil'
 
-import { atomAwardPhoto } from '~/recoil'
+import { atomAwardFocusPhoto } from '~/recoil'
 import type { ContestPhoto } from '~/types/contestTypes'
 import { contestAward } from '~/types/contestTypes'
 
@@ -30,22 +30,30 @@ export const ContestConfirmDialog: FC<Props> = memo(
     const cancelRef = useRef(null) //キャンセルボタンの参照先
     const router = useRouter() //ルーター
     //現在扱っている作品とそのsetter
-    const [awardPhoto, setAwardPhoto] = useRecoilState(atomAwardPhoto)
+    const [awardFocusPhoto, setAwardFocusPhoto] =
+      useRecoilState(atomAwardFocusPhoto)
 
     //status更新実行時の処理
     const handleClose = useCallback(async () => {
-      if (!awardPhoto) return
+      if (!awardFocusPhoto) return
 
-      await axios.patch(`/api/contest/${awardPhoto.contestId}`, {
-        id: awardPhoto.photo.id,
+      await axios.patch(`/api/contest/${awardFocusPhoto.contestId}`, {
+        id: awardFocusPhoto.photo.id,
         status: nextStatus,
       })
 
       closeModal()
       closeDialog()
-      setAwardPhoto(null)
+      setAwardFocusPhoto(null)
       router.reload()
-    }, [router, awardPhoto, setAwardPhoto, nextStatus, closeModal, closeDialog])
+    }, [
+      router,
+      awardFocusPhoto,
+      setAwardFocusPhoto,
+      nextStatus,
+      closeModal,
+      closeDialog,
+    ])
 
     return (
       <>
@@ -97,9 +105,9 @@ export const ContestConfirmDialog: FC<Props> = memo(
 const statusToColor = (status: ContestPhoto['award']): string => {
   switch (status) {
     case contestAward.YUWAKU_BONBORI:
-      return 'green'
-    case contestAward.YUWAKU_HIDDEN_CHARM:
       return 'blue'
+    case contestAward.YUWAKU_HIDDEN_CHARM:
+      return 'green'
     case contestAward.NONE:
       return 'red'
     default:
