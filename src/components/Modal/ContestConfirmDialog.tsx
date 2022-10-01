@@ -37,7 +37,7 @@ export const ContestConfirmDialog: FC<Props> = memo(
     const handleClose = useCallback(async () => {
       if (!awardFocusPhoto) return
 
-      await axios.patch(`/api/contest/${awardFocusPhoto.contestId}`, {
+      await axios.patch(`/api/contests/${awardFocusPhoto.contestId}`, {
         id: awardFocusPhoto.photo.id,
         status: nextStatus,
       })
