@@ -1,10 +1,12 @@
 import {
   Box,
+  Button,
   Flex,
   Heading,
   IconButton,
   Menu,
   MenuButton,
+  MenuItem,
   MenuList,
   Spacer,
 } from '@chakra-ui/react'
@@ -15,6 +17,9 @@ import { BsFillCameraFill } from 'react-icons/bs'
 import { FaAward, FaHome } from 'react-icons/fa'
 import { GiHamburgerMenu } from 'react-icons/gi'
 import { MdLocationPin, MdPhotoAlbum } from 'react-icons/md'
+
+import { useAuthContext } from '~/components/Provider'
+import { useLogin } from '~/hooks/useLogin'
 
 import { HeaderLink, HeaderMenuLink } from './HeaderLink'
 
@@ -27,6 +32,9 @@ const links = [
 ]
 
 export const Header: FC = memo(() => {
+  const { signOut } = useLogin()
+  const user = useAuthContext()
+
   return (
     <Flex
       bg="main.red"
@@ -41,26 +49,45 @@ export const Header: FC = memo(() => {
       </Heading>
 
       <Spacer />
-      <Box gap="2" display={{ base: 'none', lg: 'block' }}>
-        {links.map((link) => (
-          <HeaderLink {...link} key={link.text} />
-        ))}
-      </Box>
+      {user === null ? (
+        <NextLink href="/login">
+          <Button bgColor="main.red" border="1px" borderColor="white">
+            ログイン
+          </Button>
+        </NextLink>
+      ) : (
+        <>
+          <Box gap="2" display={{ base: 'none', lg: 'block' }}>
+            {links.map((link) => (
+              <HeaderLink {...link} key={link.text} />
+            ))}
+            <Button
+              onClick={() => signOut()}
+              bgColor="main.red"
+              border="1px"
+              borderColor="white"
+            >
+              ログアウト
+            </Button>
+          </Box>
 
-      <Menu>
-        <MenuButton
-          as={IconButton}
-          aria-label="Options"
-          icon={<GiHamburgerMenu />}
-          variant="outline"
-          display={{ base: 'flex', lg: 'none' }}
-        />
-        <MenuList color="black">
-          {links.map((link) => (
-            <HeaderMenuLink {...link} key={link.text} />
-          ))}
-        </MenuList>
-      </Menu>
+          <Menu>
+            <MenuButton
+              as={IconButton}
+              aria-label="Options"
+              icon={<GiHamburgerMenu />}
+              variant="outline"
+              display={{ base: 'flex', lg: 'none' }}
+            />
+            <MenuList color="black">
+              {links.map((link) => (
+                <HeaderMenuLink {...link} key={link.text} />
+              ))}
+              <MenuItem onClick={() => signOut()}>ログアウト</MenuItem>
+            </MenuList>
+          </Menu>
+        </>
+      )}
     </Flex>
   )
 })
