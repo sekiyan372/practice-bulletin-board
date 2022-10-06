@@ -22,7 +22,7 @@ $ yarn dev
 ### Environment variable setting
 
 `.env.local` ファイルをプロジェクトのルートディレクトリに作成して、環境変数を以下からコピペして設定する。
-https://docs.google.com/document/d/1Q-f2ymSP8VmTLnIhGypeyHcyqXLPMNf3GBYiWvzog5Q/edit
+https://docs.google.com/document/d/1EuLNo5TqvG33f7KT18hTvGW1ClvESjMzDFNJquhkUac/edit?usp=sharing
 
 ## Learn More
 
