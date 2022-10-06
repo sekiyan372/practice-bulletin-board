@@ -15,14 +15,16 @@ import type { SubmitHandler } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
 
 import { AlertHealthCheckFailed } from '~/components/Alert'
+import { ErrorMessage } from '~/components/Text'
 import { useLogin } from '~/hooks/useLogin'
 import { ResetPasswordFormValues } from '~/types/loginTypes'
+import { validationMessages } from '~/utils/constant'
 
 const LoginPage: NextPage = () => {
   const {
     handleSubmit,
     register,
-    formState: { isSubmitting },
+    formState: { errors, isSubmitting },
   } = useForm<ResetPasswordFormValues>()
   const { resetPassword, error } = useLogin()
 
@@ -60,8 +62,11 @@ const LoginPage: NextPage = () => {
                   id="email"
                   type="email"
                   placeholder="email"
-                  {...register('email')}
+                  {...register('email', { required: true })}
                 />
+                {errors.email?.type === 'required' && (
+                  <ErrorMessage>{validationMessages.REQUIRED}</ErrorMessage>
+                )}
               </Box>
             </FormControl>
 
