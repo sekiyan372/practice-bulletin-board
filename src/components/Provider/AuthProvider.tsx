@@ -1,12 +1,11 @@
-import type { Unsubscribe, User } from 'firebase/auth'
+import type { Unsubscribe } from 'firebase/auth'
 import { onAuthStateChanged } from 'firebase/auth'
 import { useRouter } from 'next/router'
 import type { FC, ReactNode } from 'react'
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 
 import { auth } from '~/database/firebase'
-
-type UserType = User | null
+import { UserType } from '~/types/loginTypes'
 
 type Props = {
   children: ReactNode
@@ -21,7 +20,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
   const [user, setUser] = useState<UserType>(auth.currentUser)
 
   const isAvailableForViewing = useMemo(
-    () => router.pathname === '/login',
+    () => router.pathname === '/login' || router.pathname === '/login/reset',
     [router]
   )
 

@@ -6,47 +6,50 @@ import {
   FormLabel,
   Heading,
   Input,
+  Text,
 } from '@chakra-ui/react'
 import type { NextPage } from 'next'
+import NextLink from 'next/link'
 import { useCallback } from 'react'
 import type { SubmitHandler } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
 
 import { AlertHealthCheckFailed } from '~/components/Alert'
 import { useLogin } from '~/hooks/useLogin'
-
-type FormValues = {
-  email: string
-  password: string
-}
+import { ResetPasswordFormValues } from '~/types/loginTypes'
 
 const LoginPage: NextPage = () => {
   const {
     handleSubmit,
     register,
     formState: { isSubmitting },
-  } = useForm<FormValues>()
-  const { signIn, error } = useLogin()
+  } = useForm<ResetPasswordFormValues>()
+  const { resetPassword, error } = useLogin()
 
-  const onSubmit = useCallback<SubmitHandler<FormValues>>(
-    (data) => signIn(data),
-    [signIn]
+  const onSubmit = useCallback<SubmitHandler<ResetPasswordFormValues>>(
+    (data) => resetPassword(data),
+    [resetPassword]
   )
 
   return (
     <>
       <AlertHealthCheckFailed error={error} />
-      <Center m="50px">
+
+      <Center m={{ base: '20px', sm: '50px' }}>
         <Box
           border="4px"
           borderColor="main.red"
           borderRadius="10px"
           p="20px"
-          w={{ base: '240px', sm: '400px' }}
+          w={{ base: '240px', sm: '500px' }}
         >
           <Heading textAlign="center" m="20px" color="gray.800">
-            ログイン
+            パスワードのリセット
           </Heading>
+          <Text>
+            メールアドレスを入力して送信すると、入力したアドレスにパスワード再設定用のメールが届きます。
+          </Text>
+
           <form onSubmit={handleSubmit(onSubmit)}>
             <FormControl>
               <Box py="20px">
@@ -60,19 +63,8 @@ const LoginPage: NextPage = () => {
                   {...register('email')}
                 />
               </Box>
-
-              <Box py="20px">
-                <FormLabel htmlFor="password" color="gray.800">
-                  password
-                </FormLabel>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="password"
-                  {...register('password')}
-                />
-              </Box>
             </FormControl>
+
             <Center py="20px">
               <Button
                 type="submit"
@@ -80,8 +72,19 @@ const LoginPage: NextPage = () => {
                 backgroundColor="main.red"
                 color="white"
               >
-                ログイン
+                送信
               </Button>
+            </Center>
+
+            <Center>
+              <NextLink href="/login">
+                <Text
+                  color="gray.800"
+                  _hover={{ cursor: 'pointer', opacity: 0.5 }}
+                >
+                  ログイン画面へ
+                </Text>
+              </NextLink>
             </Center>
           </form>
         </Box>

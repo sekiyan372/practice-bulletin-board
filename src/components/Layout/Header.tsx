@@ -20,6 +20,7 @@ import { MdLocationPin, MdPhotoAlbum } from 'react-icons/md'
 
 import { useAuthContext } from '~/components/Provider'
 import { useLogin } from '~/hooks/useLogin'
+import { UserType } from '~/types/loginTypes'
 
 import { HeaderLink, HeaderMenuLink } from './HeaderLink'
 
@@ -33,7 +34,7 @@ const links = [
 
 export const Header: FC = memo(() => {
   const { signOut } = useLogin()
-  const user = useAuthContext()
+  const user: UserType = useAuthContext()
 
   return (
     <Flex

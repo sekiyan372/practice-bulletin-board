@@ -23,3 +23,4 @@ export const firebase: FirebaseApp = !getApps().length
   : getApp()
 
 export const auth: Auth = getAuth()
+auth.languageCode = 'ja'

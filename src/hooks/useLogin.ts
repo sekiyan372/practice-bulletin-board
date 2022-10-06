@@ -1,34 +1,75 @@
-import { signInWithEmailAndPassword, signOut as fbSignOut } from 'firebase/auth'
+import { useToast } from '@chakra-ui/react'
+import {
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+  signOut as fbSignOut,
+} from 'firebase/auth'
 import { useRouter } from 'next/router'
 import { useCallback, useState } from 'react'
 
 import { auth } from '~/database/firebase'
+import type {
+  ResetPasswordFormValues,
+  SignInFormValues,
+} from '~/types/loginTypes'
 
-type FormValues = {
-  email: string
-  password: string
-}
+auth.languageCode = 'ja'
 
 export const useLogin = () => {
   const router = useRouter()
+  const toast = useToast()
   const [error, setError] = useState<Error | undefined>()
 
   const signIn = useCallback(
-    async (data: FormValues) => {
+    async (data: SignInFormValues) => {
       try {
         await signInWithEmailAndPassword(auth, data.email, data.password)
         await router.push('/')
+        toast({
+          title: 'ログインしました。',
+          status: 'success',
+          duration: 2000,
+          isClosable: true,
+        })
       } catch (err) {
-        setError(new Error('Failed to sing in.'))
+        setError(err instanceof Error ? err : new Error('Failed to sing in.'))
       }
     },
-    [router]
+    [router, toast]
   )
 
   const signOut = useCallback(async () => {
     await fbSignOut(auth)
     await router.push('/login')
-  }, [router])
+    toast({
+      title: 'ログアウトしました。',
+      status: 'success',
+      duration: 2000,
+      isClosable: true,
+    })
+  }, [router, toast])
 
-  return { signIn, signOut, error }
+  const resetPassword = useCallback(
+    async (data: ResetPasswordFormValues) => {
+      try {
+        await sendPasswordResetEmail(auth, data.email)
+        await router.push('/login')
+        toast({
+          title: 'メールを送信しました。',
+          status: 'success',
+          duration: 2000,
+          isClosable: true,
+        })
+      } catch (err) {
+        setError(
+          err instanceof Error
+            ? err
+            : new Error('Failed to send reset password email')
+        )
+      }
+    },
+    [router, toast]
+  )
+
+  return { signIn, signOut, resetPassword, error }
 }
