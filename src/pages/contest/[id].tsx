@@ -8,7 +8,6 @@ import useSWR from 'swr'
 
 import { AlertHealthCheckFailed } from '~/components/Alert'
 import { ContestCard } from '~/components/Card'
-// import { getContestPhotos } from '~/feature/contestPhoto'
 import { contestAward, ContestPhoto } from '~/types/contestTypes'
 
 const Contest: NextPage = () => {
@@ -28,14 +27,6 @@ const Contest: NextPage = () => {
   //湯涌ぼんぼり賞
   const [bonboriAwards, setBonboriAwards] = useState<ContestPhoto[]>([])
 
-  useEffect(() => {
-    if (data === undefined) return
-    const bonboriPickPhoto = data.filter(
-      (awardPick) => awardPick.award === contestAward.YUWAKU_BONBORI
-    )
-    setBonboriAwards(bonboriPickPhoto)
-  }, [data])
-
   //ゆわく隠れた魅力賞
   const [hiddenAwards, setHiddenAwards] = useState<ContestPhoto[]>([])
 
@@ -45,6 +36,11 @@ const Contest: NextPage = () => {
       (hiddenPick) => hiddenPick.award === contestAward.YUWAKU_HIDDEN_CHARM
     )
     setHiddenAwards(hiddenPickPhoto)
+    if (data === undefined) return
+    const bonboriPickPhoto = data.filter(
+      (awardPick) => awardPick.award === contestAward.YUWAKU_BONBORI
+    )
+    setBonboriAwards(bonboriPickPhoto)
   }, [data])
 
   return (
