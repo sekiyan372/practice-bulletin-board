@@ -51,7 +51,7 @@ export const updateContestPhoto = async (
 
   //status変更
   await contestPhotoRef.update({
-    status: contestAwardArray.indexOf(status),
+    award: contestAwardArray.indexOf(status),
     updatedAt: FieldValue.serverTimestamp(),
   })
 }
