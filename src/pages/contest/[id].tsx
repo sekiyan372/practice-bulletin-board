@@ -36,7 +36,6 @@ const Contest: NextPage = () => {
       (hiddenPick) => hiddenPick.award === contestAward.YUWAKU_HIDDEN_CHARM
     )
     setHiddenAwards(hiddenPickPhoto)
-    if (data === undefined) return
     const bonboriPickPhoto = data.filter(
       (awardPick) => awardPick.award === contestAward.YUWAKU_BONBORI
     )
