@@ -52,37 +52,47 @@ const Contest: NextPage = () => {
         <Text as="b" fontSize="xl">
           湯涌ぼんぼり賞
         </Text>
-        <Flex flexWrap="wrap">
-          {bonboriAwards.map((award, index) => {
-            return (
-              <ContestCard
-                key={award.id}
-                awardFocusPhoto={{
-                  contestId: id,
-                  photo: award,
-                }}
-                index={index + 1}
-              />
-            )
-          })}
-        </Flex>
+
+        {bonboriAwards.length === 0 ? (
+          <Text p="50px">まだ受賞作品は選ばれていません</Text>
+        ) : (
+          <Flex flexWrap="wrap">
+            {bonboriAwards.map((award, index) => {
+              return (
+                <ContestCard
+                  key={award.id}
+                  awardFocusPhoto={{
+                    contestId: id,
+                    photo: award,
+                  }}
+                  index={index + 1}
+                />
+              )
+            })}
+          </Flex>
+        )}
+
         <Text as="b" fontSize="xl">
           ゆわく隠れた魅力賞
         </Text>
-        <Flex flexWrap="wrap">
-          {hiddenAwards.map((award, index) => {
-            return (
-              <ContestCard
-                key={award.id}
-                awardFocusPhoto={{
-                  contestId: id,
-                  photo: award,
-                }}
-                index={index + 1}
-              />
-            )
-          })}
-        </Flex>
+        {hiddenAwards.length === 0 ? (
+          <Text p="50px">まだ受賞作品は選ばれていません</Text>
+        ) : (
+          <Flex flexWrap="wrap">
+            {hiddenAwards.map((award, index) => {
+              return (
+                <ContestCard
+                  key={award.id}
+                  awardFocusPhoto={{
+                    contestId: id,
+                    photo: award,
+                  }}
+                  index={index + 1}
+                />
+              )
+            })}
+          </Flex>
+        )}
       </Box>
 
       <Heading textAlign="center" m="50px" color="gray.800">
