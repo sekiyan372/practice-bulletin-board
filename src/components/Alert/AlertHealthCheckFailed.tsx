@@ -27,7 +27,9 @@ export const AlertHealthCheckFailed: FC<Props> = ({ error }) => {
           <AlertIcon />
           <Box ml="4">
             <Text>
-              データの疎通に失敗しました。サーバー管理元にお問い合わせください。
+              {error
+                ? error.message
+                : 'データの疎通に失敗しました。サーバー管理元にお問い合わせください。'}
             </Text>
           </Box>
           <CloseButton
