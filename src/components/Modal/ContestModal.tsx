@@ -55,13 +55,32 @@ export const ContestModal: FC<Props> = memo(({ modalState, handleClose }) => {
               alt="Picture of photo contest"
               height={480}
               mx="auto"
+              my="20px"
             />
-            <Text fontSize="20px" fontWeight="bold" color="gray.800" py="10px">
-              {awardFocusPhoto?.photo.name}
-            </Text>
-            <Text fontSize="16px" color="gray.600" pb="10px">
-              {awardFocusPhoto?.photo.comment}
-            </Text>
+            <Box py="10px">
+              <Text fontSize="20px" fontWeight="bold" color="gray.800">
+                名前
+              </Text>
+              <Text fontSize="16px" color="gray.600" pb="10px">
+                {awardFocusPhoto?.photo.name}
+              </Text>
+            </Box>
+            <Box py="10px">
+              <Text fontSize="20px" fontWeight="bold" color="gray.800">
+                タイトル
+              </Text>
+              <Text fontSize="16px" color="gray.600" pb="10px">
+                {awardFocusPhoto?.photo.title}
+              </Text>
+            </Box>
+            <Box py="10px">
+              <Text fontSize="20px" fontWeight="bold" color="gray.800">
+                コメント
+              </Text>
+              <Text fontSize="16px" color="gray.600" pb="10px">
+                {awardFocusPhoto?.photo.comment}
+              </Text>
+            </Box>
 
             <Box textAlign="center" py="10">
               {awardFocusPhoto?.photo.award === contestAward.NONE && (
