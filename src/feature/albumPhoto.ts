@@ -4,12 +4,10 @@ import type {
   DocumentReference,
   QuerySnapshot,
 } from 'firebase-admin/firestore'
-import { FieldValue } from 'firebase-admin/firestore'
 
 import { firestore, storage } from '~/database/firebaseAdmin'
 import { albumPhotoConverter } from '~/feature/converter'
 import type { Album, AlbumPhoto } from '~/types/albumTypes'
-import { albumStatusArray } from '~/types/albumTypes'
 import { ALBUM_DEV, ALBUM_PROD, isEnv, PHOTO } from '~/utils'
 
 export const getAlbumPhotos = async (
@@ -33,27 +31,6 @@ export const getAlbumPhotos = async (
   const albumPhotos: AlbumPhoto[] = snapShot.docs.map((doc) => doc.data())
 
   return albumPhotos
-}
-
-export const updateAlbumPhoto = async (
-  aid: Album['id'],
-  id: AlbumPhoto['id'],
-  status: AlbumPhoto['status']
-) => {
-  if (!firestore) throw new Error()
-
-  //firestoreのdocumentの参照情報
-  const albumPhotoRef: DocumentReference<DocumentData> = firestore
-    .collection(isEnv() ? ALBUM_PROD : ALBUM_DEV)
-    .doc(aid)
-    .collection(PHOTO)
-    .doc(id)
-
-  //status変更
-  await albumPhotoRef.update({
-    status: albumStatusArray.indexOf(status),
-    updatedAt: FieldValue.serverTimestamp(),
-  })
 }
 
 export const deleteAlbumPhoto = async (

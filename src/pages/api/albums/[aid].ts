@@ -1,10 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-import {
-  deleteAlbumPhoto,
-  getAlbumPhotos,
-  updateAlbumPhoto,
-} from '~/feature/albumPhoto'
+import { deleteAlbumPhoto, getAlbumPhotos } from '~/feature/albumPhoto'
 import type { AlbumPhoto } from '~/types/albumTypes'
 
 const getHandler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -22,29 +18,6 @@ const getHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   } catch (e) {
     //データ取得失敗のレスポンス
     res.status(500).send({ httpStatus: 500, message: 'failed to fetch data' })
-  }
-}
-
-const patchHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { aid } = req.query
-  const { id, status } = req.body
-
-  try {
-    if (
-      Array.isArray(aid) ||
-      aid === undefined ||
-      Array.isArray(id) ||
-      id === undefined ||
-      Array.isArray(status) ||
-      status === undefined
-    )
-      throw 'id is notional value.'
-
-    await updateAlbumPhoto(aid, id, status)
-
-    res.status(200).send({ httpStatus: 200, message: 'update complete' })
-  } catch (e) {
-    res.status(500).send({ httpStatus: 500, message: 'failed to patch data' })
   }
 }
 
@@ -76,9 +49,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case 'GET':
       await getHandler(req, res)
-      break
-    case 'PATCH':
-      await patchHandler(req, res)
       break
     case 'DELETE':
       await deleteHandler(req, res)
