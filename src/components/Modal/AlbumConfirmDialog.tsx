@@ -41,7 +41,7 @@ export const AlbumConfirmDialog: FC<Props> = memo(
           !focusPhoto.albumId ||
           Array.isArray(focusPhoto.albumId)
         )
-          return
+          throw new Error('渡されたパラメータが正しくありません。')
 
         await updateAlbumPhoto(
           focusPhoto.albumId,

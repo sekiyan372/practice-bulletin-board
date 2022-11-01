@@ -8,6 +8,7 @@ import {
 import type { Auth } from 'firebase/auth'
 import { getAuth } from 'firebase/auth'
 import { Firestore, getFirestore } from 'firebase/firestore'
+import { FirebaseStorage, getStorage } from 'firebase/storage'
 
 const config: FirebaseOptions = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -27,3 +28,5 @@ export const auth: Auth = getAuth()
 auth.languageCode = 'ja'
 
 export const firestore: Firestore = getFirestore()
+
+export const storage: FirebaseStorage = getStorage()
