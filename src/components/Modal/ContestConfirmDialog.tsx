@@ -8,15 +8,14 @@ import {
   Button,
   Text,
 } from '@chakra-ui/react'
-import axios from 'axios'
 import { useRouter } from 'next/router'
-import type { FC } from 'react'
-import { memo, useCallback, useRef } from 'react'
+import { FC, memo, useCallback, useRef, useState } from 'react'
 import { useRecoilState } from 'recoil'
 
+import { AlertHealthCheckFailed } from '~/components/Alert'
+import { updateContestPhoto } from '~/feature/frontend/contestPhoto'
 import { atomAwardFocusPhoto } from '~/recoil'
-import type { ContestPhoto } from '~/types/contestTypes'
-import { contestAward } from '~/types/contestTypes'
+import { contestAward, ContestPhoto } from '~/types/contestTypes'
 
 type Props = {
   nextStatus: ContestPhoto['award']
@@ -32,20 +31,33 @@ export const ContestConfirmDialog: FC<Props> = memo(
     //現在扱っている作品とそのsetter
     const [awardFocusPhoto, setAwardFocusPhoto] =
       useRecoilState(atomAwardFocusPhoto)
+    const [error, setError] = useState<Error | undefined>(undefined)
 
     //status更新実行時の処理
     const handleClose = useCallback(async () => {
-      if (!awardFocusPhoto) return
+      try {
+        if (
+          !awardFocusPhoto ||
+          !awardFocusPhoto.contestId ||
+          Array.isArray(awardFocusPhoto.contestId)
+        )
+          throw new Error('渡されたパラメータが正しくありません。')
 
-      await axios.patch(`/api/contests/${awardFocusPhoto.contestId}`, {
-        id: awardFocusPhoto.photo.id,
-        status: nextStatus,
-      })
+        await updateContestPhoto(
+          awardFocusPhoto.contestId,
+          awardFocusPhoto.photo.id,
+          nextStatus
+        )
 
-      closeModal()
-      closeDialog()
-      setAwardFocusPhoto(null)
-      router.reload()
+        closeModal()
+        closeDialog()
+        setAwardFocusPhoto(null)
+        router.reload()
+      } catch (err) {
+        setError(
+          err instanceof Error ? err : new Error('エラーが発生しました。')
+        )
+      }
     }, [
       router,
       awardFocusPhoto,
@@ -67,6 +79,7 @@ export const ContestConfirmDialog: FC<Props> = memo(
         >
           <AlertDialogOverlay />
           <AlertDialogContent>
+            <AlertHealthCheckFailed error={error} />
             <AlertDialogHeader color="gray.800">実行確認</AlertDialogHeader>
 
             <AlertDialogBody color="gray.800">
