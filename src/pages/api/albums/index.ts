@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-import { getAlbums } from '~/feature/album'
+import { getAlbums } from '~/feature/backend/album'
 import type { Album } from '~/types/albumTypes'
 
 const getHandler = async (_: NextApiRequest, res: NextApiResponse) => {

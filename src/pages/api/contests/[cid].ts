@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-import { getContestPhotos, updateContestPhoto } from '~/feature/contestPhoto'
+import { getContestPhotos } from '~/feature/backend/contestPhoto'
 import type { ContestPhoto } from '~/types/contestTypes'
 
 const getHandler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -21,37 +21,11 @@ const getHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 }
 
-const patchHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { cid } = req.query
-  const { id, status } = req.body
-
-  try {
-    if (
-      Array.isArray(cid) ||
-      cid === undefined ||
-      Array.isArray(id) ||
-      id === undefined ||
-      Array.isArray(status) ||
-      status === undefined
-    )
-      throw 'id is notional value.'
-
-    await updateContestPhoto(cid, id, status)
-
-    res.status(200).send({ httpStatus: 200, message: 'update complete' })
-  } catch (e) {
-    res.status(500).send({ httpStatus: 500, message: 'failed to patch data' })
-  }
-}
-
 //HTTPメソッドに合わせて分岐し、期待値外のメソッドが送られてきた場合は405エラーを返却する
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case 'GET':
       await getHandler(req, res)
-      break
-    case 'PATCH':
-      await patchHandler(req, res)
       break
     default:
       res

@@ -8,15 +8,13 @@ import {
   Button,
   Text,
 } from '@chakra-ui/react'
-import axios from 'axios'
-import { useRouter } from 'next/router'
-import type { FC } from 'react'
-import { memo, useCallback, useRef } from 'react'
+import { FC, memo, useCallback, useRef, useState } from 'react'
 import { useRecoilState } from 'recoil'
 
+import { AlertHealthCheckFailed } from '~/components/Alert'
+import { updateAlbumPhoto } from '~/feature/frontend/albumPhoto'
 import { atomFocusPhoto } from '~/recoil'
-import type { AlbumPhoto } from '~/types/albumTypes'
-import { albumStatus } from '~/types/albumTypes'
+import { AlbumPhoto, albumStatus } from '~/types/albumTypes'
 
 type Props = {
   nextStatus: AlbumPhoto['status']
@@ -28,24 +26,36 @@ type Props = {
 export const AlbumConfirmDialog: FC<Props> = memo(
   ({ nextStatus, modalState, closeModal, closeDialog }) => {
     const cancelRef = useRef(null) //キャンセルボタンの参照先
-    const router = useRouter() //ルーター
     //現在扱っている作品とそのsetter
     const [focusPhoto, setFocusPhoto] = useRecoilState(atomFocusPhoto)
+    const [error, setError] = useState<Error | undefined>(undefined)
 
     //status更新実行時の処理
     const handleClose = useCallback(async () => {
-      if (!focusPhoto) return
+      try {
+        if (
+          !focusPhoto ||
+          !focusPhoto.albumId ||
+          Array.isArray(focusPhoto.albumId)
+        )
+          throw new Error('渡されたパラメータが正しくありません。')
 
-      await axios.patch(`/api/albums/${focusPhoto.albumId}`, {
-        id: focusPhoto.photo.id,
-        status: nextStatus,
-      })
+        await updateAlbumPhoto(
+          focusPhoto.albumId,
+          focusPhoto.photo.id,
+          nextStatus
+        )
 
-      closeModal()
-      closeDialog()
-      setFocusPhoto(null)
-      router.reload()
-    }, [router, focusPhoto, setFocusPhoto, nextStatus, closeModal, closeDialog])
+        closeModal()
+        closeDialog()
+        setFocusPhoto(null)
+        focusPhoto.mutate()
+      } catch (err) {
+        setError(
+          err instanceof Error ? err : new Error('エラーが発生しました。')
+        )
+      }
+    }, [focusPhoto, setFocusPhoto, nextStatus, closeModal, closeDialog])
 
     return (
       <>
@@ -59,6 +69,7 @@ export const AlbumConfirmDialog: FC<Props> = memo(
         >
           <AlertDialogOverlay />
           <AlertDialogContent>
+            <AlertHealthCheckFailed error={error} />
             <AlertDialogHeader color="gray.800">実行確認</AlertDialogHeader>
 
             <AlertDialogBody color="gray.800">

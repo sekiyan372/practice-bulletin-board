@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-import { getSpots } from '~/feature/spot'
+import { getSpots } from '~/feature/backend/spot'
 import type { Spot } from '~/types/photoRallyTypes'
 
 const getHandler = async (_: NextApiRequest, res: NextApiResponse) => {
