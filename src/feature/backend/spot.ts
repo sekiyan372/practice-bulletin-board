@@ -4,7 +4,7 @@ import type {
 } from 'firebase-admin/firestore'
 
 import { firestore } from '~/database/firebaseAdmin'
-import { spotConverter } from '~/feature/converter'
+import { spotConverter } from '~/feature/backend/converter'
 import type { Spot } from '~/types/photoRallyTypes'
 import { isEnv, SPOT_DEV, SPOT_PROD } from '~/utils'
 

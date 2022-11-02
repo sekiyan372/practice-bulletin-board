@@ -4,7 +4,7 @@ import type {
 } from 'firebase-admin/firestore'
 
 import { firestore } from '~/database/firebaseAdmin'
-import { contestConverter } from '~/feature/converter'
+import { contestConverter } from '~/feature/backend/converter'
 import type { Contest } from '~/types/contestTypes'
 import { CONTEST_DEV, CONTEST_PROD, isEnv } from '~/utils'
 

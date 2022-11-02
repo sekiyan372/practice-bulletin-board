@@ -4,7 +4,7 @@ import type {
 } from 'firebase-admin/firestore'
 
 import { firestore } from '~/database/firebaseAdmin'
-import { albumPhotoConverter } from '~/feature/converter'
+import { albumPhotoConverter } from '~/feature/backend/converter'
 import type { Album, AlbumPhoto } from '~/types/albumTypes'
 import { ALBUM_DEV, ALBUM_PROD, isEnv, PHOTO } from '~/utils'
 

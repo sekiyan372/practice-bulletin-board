@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-import { getContestPhotos } from '~/feature/contestPhoto'
+import { getContestPhotos } from '~/feature/backend/contestPhoto'
 import type { ContestPhoto } from '~/types/contestTypes'
 
 const getHandler = async (req: NextApiRequest, res: NextApiResponse) => {

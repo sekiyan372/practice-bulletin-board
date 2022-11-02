@@ -23,9 +23,9 @@ const Contest: NextPage = () => {
     `/api/contests/${id}`,
     fetcher
   )
+
   //湯涌ぼんぼり賞
   const [bonboriAwards, setBonboriAwards] = useState<ContestPhoto[]>([])
-
   //ゆわく隠れた魅力賞
   const [hiddenAwards, setHiddenAwards] = useState<ContestPhoto[]>([])
 
