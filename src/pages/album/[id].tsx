@@ -8,8 +8,7 @@ import {
   Tabs,
   useDisclosure,
 } from '@chakra-ui/react'
-import type { AxiosResponse } from 'axios'
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useCallback, useMemo, useState } from 'react'
@@ -20,8 +19,7 @@ import { DeleteContentsButton } from '~/components/Button'
 import { AlbumCard } from '~/components/Card'
 import { DeleteConfirmDialog } from '~/components/Modal'
 import { ManageTabList } from '~/components/Tab'
-import type { AlbumPhoto, AlbumStatus } from '~/types/albumTypes'
-import { albumStatus } from '~/types/albumTypes'
+import { AlbumPhoto, AlbumStatus, albumStatus } from '~/types/albumTypes'
 
 const AlbumPhotoPage: NextPage = () => {
   const router = useRouter()
@@ -31,7 +29,7 @@ const AlbumPhotoPage: NextPage = () => {
     const res: AxiosResponse<{ photos: AlbumPhoto[] }, Error> = await axios(url)
     return res.data.photos
   }, [])
-  const { data, error } = useSWR<AlbumPhoto[], Error>(
+  const { data, error, mutate } = useSWR<AlbumPhoto[], Error>(
     `/api/albums/${id}`,
     fetcher
   )
@@ -132,6 +130,7 @@ const AlbumPhotoPage: NextPage = () => {
                   focusPhoto={{
                     albumId: id,
                     photo: photo,
+                    mutate,
                   }}
                   handleCheck={handleCheck}
                 />
@@ -144,6 +143,7 @@ const AlbumPhotoPage: NextPage = () => {
                   focusPhoto={{
                     albumId: id,
                     photo: photo,
+                    mutate,
                   }}
                   handleCheck={handleCheck}
                 />
@@ -156,6 +156,7 @@ const AlbumPhotoPage: NextPage = () => {
                   focusPhoto={{
                     albumId: id,
                     photo: photo,
+                    mutate,
                   }}
                   handleCheck={handleCheck}
                 />

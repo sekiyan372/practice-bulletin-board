@@ -1,6 +1,5 @@
 import { Box, Flex, Heading, Skeleton, Text } from '@chakra-ui/react'
-import type { AxiosResponse } from 'axios'
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
@@ -20,7 +19,7 @@ const Contest: NextPage = () => {
     )
     return res.data.photos
   }, [])
-  const { data, error } = useSWR<ContestPhoto[], Error>(
+  const { data, error, mutate } = useSWR<ContestPhoto[], Error>(
     `/api/contests/${id}`,
     fetcher
   )
@@ -57,18 +56,17 @@ const Contest: NextPage = () => {
           <Text p="50px">まだ受賞作品は選ばれていません</Text>
         ) : (
           <Flex flexWrap="wrap">
-            {bonboriAwards.map((award, index) => {
-              return (
-                <ContestCard
-                  key={award.id}
-                  awardFocusPhoto={{
-                    contestId: id,
-                    photo: award,
-                  }}
-                  index={index + 1}
-                />
-              )
-            })}
+            {bonboriAwards.map((award, index) => (
+              <ContestCard
+                key={award.id}
+                awardFocusPhoto={{
+                  contestId: id,
+                  photo: award,
+                  mutate,
+                }}
+                index={index + 1}
+              />
+            ))}
           </Flex>
         )}
 
@@ -79,18 +77,17 @@ const Contest: NextPage = () => {
           <Text p="50px">まだ受賞作品は選ばれていません</Text>
         ) : (
           <Flex flexWrap="wrap">
-            {hiddenAwards.map((award, index) => {
-              return (
-                <ContestCard
-                  key={award.id}
-                  awardFocusPhoto={{
-                    contestId: id,
-                    photo: award,
-                  }}
-                  index={index + 1}
-                />
-              )
-            })}
+            {hiddenAwards.map((award, index) => (
+              <ContestCard
+                key={award.id}
+                awardFocusPhoto={{
+                  contestId: id,
+                  photo: award,
+                  mutate,
+                }}
+                index={index + 1}
+              />
+            ))}
           </Flex>
         )}
       </Box>
@@ -108,6 +105,7 @@ const Contest: NextPage = () => {
                 awardFocusPhoto={{
                   contestId: id,
                   photo: photo,
+                  mutate,
                 }}
                 index={index + 1}
               />

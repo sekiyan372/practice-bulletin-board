@@ -1,3 +1,5 @@
+import type { KeyedMutator } from 'swr'
+
 export type Album = {
   id: string
   ja: {
@@ -38,4 +40,5 @@ export type AlbumPhoto = {
 export type FocusPhoto = {
   albumId: string | string[] | undefined
   photo: AlbumPhoto
+  mutate: KeyedMutator<AlbumPhoto[]>
 }

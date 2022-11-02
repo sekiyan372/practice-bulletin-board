@@ -8,15 +8,13 @@ import {
   Button,
   Text,
 } from '@chakra-ui/react'
-import { useRouter } from 'next/router'
 import { FC, memo, useCallback, useRef, useState } from 'react'
 import { useRecoilState } from 'recoil'
 
 import { AlertHealthCheckFailed } from '~/components/Alert'
 import { updateAlbumPhoto } from '~/feature/frontend/albumPhoto'
 import { atomFocusPhoto } from '~/recoil'
-import type { AlbumPhoto } from '~/types/albumTypes'
-import { albumStatus } from '~/types/albumTypes'
+import { AlbumPhoto, albumStatus } from '~/types/albumTypes'
 
 type Props = {
   nextStatus: AlbumPhoto['status']
@@ -28,7 +26,6 @@ type Props = {
 export const AlbumConfirmDialog: FC<Props> = memo(
   ({ nextStatus, modalState, closeModal, closeDialog }) => {
     const cancelRef = useRef(null) //キャンセルボタンの参照先
-    const router = useRouter() //ルーター
     //現在扱っている作品とそのsetter
     const [focusPhoto, setFocusPhoto] = useRecoilState(atomFocusPhoto)
     const [error, setError] = useState<Error | undefined>(undefined)
@@ -52,13 +49,13 @@ export const AlbumConfirmDialog: FC<Props> = memo(
         closeModal()
         closeDialog()
         setFocusPhoto(null)
-        router.reload()
+        focusPhoto.mutate()
       } catch (err) {
         setError(
           err instanceof Error ? err : new Error('エラーが発生しました。')
         )
       }
-    }, [router, focusPhoto, setFocusPhoto, nextStatus, closeModal, closeDialog])
+    }, [focusPhoto, setFocusPhoto, nextStatus, closeModal, closeDialog])
 
     return (
       <>

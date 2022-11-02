@@ -1,3 +1,5 @@
+import type { KeyedMutator } from 'swr'
+
 export type Contest = {
   id: string
   ja: {
@@ -41,4 +43,5 @@ export type ContestPhoto = {
 export type AwardFocusPhoto = {
   contestId: string | string[] | undefined
   photo: ContestPhoto
+  mutate: KeyedMutator<ContestPhoto[]>
 }

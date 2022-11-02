@@ -8,7 +8,6 @@ import {
   Button,
   Text,
 } from '@chakra-ui/react'
-import { useRouter } from 'next/router'
 import { FC, memo, useCallback, useRef, useState } from 'react'
 import { useRecoilState } from 'recoil'
 
@@ -27,7 +26,6 @@ type Props = {
 export const ContestConfirmDialog: FC<Props> = memo(
   ({ nextStatus, modalState, closeModal, closeDialog }) => {
     const cancelRef = useRef(null) //キャンセルボタンの参照先
-    const router = useRouter() //ルーター
     //現在扱っている作品とそのsetter
     const [awardFocusPhoto, setAwardFocusPhoto] =
       useRecoilState(atomAwardFocusPhoto)
@@ -52,14 +50,13 @@ export const ContestConfirmDialog: FC<Props> = memo(
         closeModal()
         closeDialog()
         setAwardFocusPhoto(null)
-        router.reload()
+        awardFocusPhoto.mutate()
       } catch (err) {
         setError(
           err instanceof Error ? err : new Error('エラーが発生しました。')
         )
       }
     }, [
-      router,
       awardFocusPhoto,
       setAwardFocusPhoto,
       nextStatus,
