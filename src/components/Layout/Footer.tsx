@@ -7,12 +7,12 @@ export const Footer: FC = memo(() => {
     <chakra.footer
       display="flex"
       justifyContent="center"
-      bg="main.red"
-      color="white"
+      bg="blue.50"
+      color="gray.800"
       fontSize="15px"
       fontWeight="medium"
     >
-      © 2022 Tourism Project.
+      © 2022 Suiki Sekiya.
     </chakra.footer>
   )
 })

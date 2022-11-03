@@ -1,1 +1,0 @@
-export { DeleteContentsButton } from './DeleteContentsButton'

@@ -1,14 +1,16 @@
-# yuwaku-admin
+# Practice Bulletin Board
 
-湯涌フォトラリーの管理者用ページ
+**ガバガバ掲示板**
+
+Tourism Project の開発を一通り学べる教材です。
 
 ## Version
 
-- node: v16.13.1
+- node: v18.12.0
 
 ## Getting Started
 
-clone した時は 以下を行う。
+clone した時は以下を行う。
 
 ```bash
 # パッケージインストール
@@ -18,17 +20,3 @@ $ yarn dev
 ```
 
 サーバー起動後 [http://localhost:3000](http://localhost:3000) にブラウザでアクセスする。
-
-### Environment variable setting
-
-`.env.local` ファイルをプロジェクトのルートディレクトリに作成して、環境変数を以下からコピペして設定する。
-https://docs.google.com/document/d/1EuLNo5TqvG33f7KT18hTvGW1ClvESjMzDFNJquhkUac/edit?usp=sharing
-
-## Learn More
-
-```bash
-# コードチェック
-$ yarn lint:fix
-# コードフォーマット
-$ yarn format:fix
-```
