@@ -1,12 +1,16 @@
 import { NextApiHandler } from 'next'
 
-import { db } from '~/db/firebaseAdmin'
-import { isEnv, POST_DEV, POST_PROD } from '~/utils'
+import { getPosts } from '~/feature/backend/post'
 
 const getHandler: NextApiHandler = async (_, res) => {
-  const getData = await db.collection(isEnv() ? POST_PROD : POST_DEV).get()
-  const posts = getData.docs.map((doc) => doc.data())
-  res.status(200).json(posts)
+  try {
+    const posts = await getPosts()
+    res.status(200).json(posts)
+  } catch (err) {
+    const error =
+      err instanceof Error ? err : new Error('Failed to Get Request')
+    res.status(500).json(error)
+  }
 }
 
 const handler: NextApiHandler = (req, res) => {

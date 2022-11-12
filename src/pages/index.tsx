@@ -7,15 +7,13 @@ import {
   Input,
   Text,
   Textarea,
-  useToast,
 } from '@chakra-ui/react'
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
+import dayjs from 'dayjs'
 import type { NextPage } from 'next'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 
 import { ErrorMessage } from '~/components/Text'
-import { db } from '~/db/firebase'
-import { isEnv, POST_DEV, POST_PROD } from '~/utils'
+import { usePost } from '~/hooks/usePost'
 
 const Home: NextPage = () => {
   const {
@@ -23,33 +21,15 @@ const Home: NextPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm({ mode: 'onChange' })
-  const toast = useToast()
+
+  const { data, sendPost } = usePost()
 
   const onSubmit: SubmitHandler<FieldValues> = async (values) => {
     const { name, text } = values
-
-    try {
-      const collectionRef = collection(db, isEnv() ? POST_PROD : POST_DEV)
-      await addDoc(collectionRef, {
-        name: name,
-        text: text,
-        createdAt: serverTimestamp(),
-      })
-
-      toast({
-        title: '投稿が完了しました',
-        status: 'success',
-        duration: 2000,
-        isClosable: true,
-      })
-    } catch (err) {
-      toast({
-        title: '投稿に失敗しました',
-        status: 'error',
-        duration: 2000,
-        isClosable: true,
-      })
+    if (typeof name !== 'string' || typeof text !== 'string') {
+      return
     }
+    sendPost(name, text)
   }
 
   return (
@@ -113,6 +93,15 @@ const Home: NextPage = () => {
           <Text p="4">投稿内容</Text>
           <Text p="4">投稿日時</Text>
         </Flex>
+        {data?.map((post) => (
+          <Flex key={post.id}>
+            <Text p="4">{post.name}</Text>
+            <Text p="4">{post.text}</Text>
+            <Text p="4">
+              {dayjs(post.createdAt).format('YYYY/MM/DD HH:mm:ss')}
+            </Text>
+          </Flex>
+        ))}
       </Box>
     </>
   )
