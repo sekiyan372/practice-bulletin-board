@@ -1,7 +1,9 @@
-import { Flex, Heading } from '@chakra-ui/react'
+import { Button, Flex, Heading, Spacer } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import type { FC } from 'react'
 import { memo } from 'react'
+
+import { logOut } from '~/feature/frontend/auth'
 
 export const Header: FC = memo(() => {
   return (
@@ -16,6 +18,13 @@ export const Header: FC = memo(() => {
       <Heading fontSize={{ base: '15px', sm: '30px' }}>
         <NextLink href="/">ガバガバ掲示板</NextLink>
       </Heading>
+
+      <Spacer />
+
+      <NextLink href="/login">
+        <Button>管理者ログイン</Button>
+      </NextLink>
+      <Button onClick={() => logOut()}>ログアウト</Button>
     </Flex>
   )
 })

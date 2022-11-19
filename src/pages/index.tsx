@@ -13,6 +13,7 @@ import type { NextPage } from 'next'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 
 import { ErrorMessage } from '~/components/Text'
+import { auth } from '~/db/firebase'
 import { usePost } from '~/hooks/usePost'
 
 const Home: NextPage = () => {
@@ -22,7 +23,7 @@ const Home: NextPage = () => {
     formState: { errors },
   } = useForm({ mode: 'onChange' })
 
-  const { data, sendPost } = usePost()
+  const { data, sendPost, handleDeletePost } = usePost()
 
   const onSubmit: SubmitHandler<FieldValues> = async (values) => {
     const { name, text } = values
@@ -31,6 +32,8 @@ const Home: NextPage = () => {
     }
     sendPost(name, text)
   }
+
+  console.log(auth.currentUser)
 
   return (
     <>
@@ -100,6 +103,14 @@ const Home: NextPage = () => {
             <Text p="4">
               {dayjs(post.createdAt).format('YYYY/MM/DD HH:mm:ss')}
             </Text>
+            {auth.currentUser && (
+              <Button
+                colorScheme="red"
+                onClick={() => handleDeletePost(post.id)}
+              >
+                削除
+              </Button>
+            )}
           </Flex>
         ))}
       </Box>

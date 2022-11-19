@@ -7,6 +7,7 @@ export const getPosts = async (): Promise<Post[]> => {
   const getData = await db
     .collection(isEnv() ? POST_PROD : POST_DEV)
     .withConverter(postConverter())
+    .orderBy('createdAt', 'desc')
     .get()
   const posts = getData.docs.map((doc) => doc.data())
   return posts
