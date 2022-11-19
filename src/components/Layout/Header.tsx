@@ -3,9 +3,11 @@ import NextLink from 'next/link'
 import type { FC } from 'react'
 import { memo } from 'react'
 
-import { logOut } from '~/feature/frontend/auth'
+import { useLogin } from '~/hooks/useLogin'
 
 export const Header: FC = memo(() => {
+  const { user, signOut } = useLogin()
+
   return (
     <Flex
       bg="blue.50"
@@ -21,10 +23,13 @@ export const Header: FC = memo(() => {
 
       <Spacer />
 
-      <NextLink href="/login">
-        <Button>管理者ログイン</Button>
-      </NextLink>
-      <Button onClick={() => logOut()}>ログアウト</Button>
+      {user ? (
+        <Button onClick={() => signOut()}>ログアウト</Button>
+      ) : (
+        <NextLink href="/login">
+          <Button>管理者ログイン</Button>
+        </NextLink>
+      )}
     </Flex>
   )
 })

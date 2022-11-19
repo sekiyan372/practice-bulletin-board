@@ -10,30 +10,31 @@ import {
 } from '@chakra-ui/react'
 import dayjs from 'dayjs'
 import type { NextPage } from 'next'
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 
 import { ErrorMessage } from '~/components/Text'
-import { auth } from '~/db/firebase'
+import { useLogin } from '~/hooks/useLogin'
 import { usePost } from '~/hooks/usePost'
+
+type FormValues = {
+  name: string
+  text: string
+}
 
 const Home: NextPage = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ mode: 'onChange' })
+  } = useForm<FormValues>({ mode: 'onChange' })
 
+  const { user } = useLogin()
   const { data, sendPost, handleDeletePost } = usePost()
 
-  const onSubmit: SubmitHandler<FieldValues> = async (values) => {
+  const onSubmit: SubmitHandler<FormValues> = async (values) => {
     const { name, text } = values
-    if (typeof name !== 'string' || typeof text !== 'string') {
-      return
-    }
     sendPost(name, text)
   }
-
-  console.log(auth.currentUser)
 
   return (
     <>
@@ -58,9 +59,7 @@ const Home: NextPage = () => {
                 },
               })}
             />
-            {errors.name && (
-              <ErrorMessage>{errors.name.message?.toString()}</ErrorMessage>
-            )}
+            {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
 
             <Textarea
               id="text"
@@ -76,9 +75,7 @@ const Home: NextPage = () => {
                 },
               })}
             />
-            {errors.text && (
-              <ErrorMessage>{errors.text.message?.toString()}</ErrorMessage>
-            )}
+            {errors.text && <ErrorMessage>{errors.text.message}</ErrorMessage>}
           </Box>
         </FormControl>
 
@@ -103,7 +100,7 @@ const Home: NextPage = () => {
             <Text p="4">
               {dayjs(post.createdAt).format('YYYY/MM/DD HH:mm:ss')}
             </Text>
-            {auth.currentUser && (
+            {user && (
               <Button
                 colorScheme="red"
                 onClick={() => handleDeletePost(post.id)}
