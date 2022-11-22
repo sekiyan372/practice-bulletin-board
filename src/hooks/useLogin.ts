@@ -1,17 +1,10 @@
 import { useToast } from '@chakra-ui/react'
-import {
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  signOut as fbSignOut,
-  User,
-} from 'firebase/auth'
+import { signInWithEmailAndPassword, signOut as fbSignOut } from 'firebase/auth'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
 
 import { auth } from '~/db/firebase'
 
 type UseLoginReturn = {
-  user: User | null
   signIn: (email: string, password: string) => Promise<void>
   signOut: () => Promise<void>
 }
@@ -19,11 +12,6 @@ type UseLoginReturn = {
 export const useLogin = (): UseLoginReturn => {
   const toast = useToast()
   const router = useRouter()
-  const [user, setUser] = useState<User | null>(null)
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (userData) => setUser(userData))
-  }, [])
 
   const signIn = async (email: string, password: string) => {
     try {
@@ -32,7 +20,6 @@ export const useLogin = (): UseLoginReturn => {
         email,
         password
       )
-      setUser(signInResponse.user)
       router.push('/')
 
       toast({
@@ -57,8 +44,7 @@ export const useLogin = (): UseLoginReturn => {
   const signOut = async () => {
     try {
       await fbSignOut(auth)
-      setUser(null)
-      router.push('/login')
+      router.push('/')
 
       toast({
         title: 'ログアウトしました。',
@@ -79,5 +65,5 @@ export const useLogin = (): UseLoginReturn => {
     }
   }
 
-  return { user, signIn, signOut }
+  return { signIn, signOut }
 }

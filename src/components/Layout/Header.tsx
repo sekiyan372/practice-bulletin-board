@@ -3,10 +3,12 @@ import NextLink from 'next/link'
 import type { FC } from 'react'
 import { memo } from 'react'
 
+import { useAuthContext } from '~/components/Provider'
 import { useLogin } from '~/hooks/useLogin'
 
 export const Header: FC = memo(() => {
-  const { user, signOut } = useLogin()
+  const user = useAuthContext()
+  const { signOut } = useLogin()
 
   return (
     <Flex

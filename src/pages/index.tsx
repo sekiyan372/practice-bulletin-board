@@ -12,8 +12,8 @@ import dayjs from 'dayjs'
 import type { NextPage } from 'next'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
+import { useAuthContext } from '~/components/Provider'
 import { ErrorMessage } from '~/components/Text'
-import { useLogin } from '~/hooks/useLogin'
 import { usePost } from '~/hooks/usePost'
 
 type FormValues = {
@@ -28,7 +28,7 @@ const Home: NextPage = () => {
     formState: { errors },
   } = useForm<FormValues>({ mode: 'onChange' })
 
-  const { user } = useLogin()
+  const user = useAuthContext()
   const { data, sendPost, handleDeletePost } = usePost()
 
   const onSubmit: SubmitHandler<FormValues> = async (values) => {
