@@ -1,89 +1,76 @@
-import { Button, FormControl, Input, useToast } from '@chakra-ui/react'
+import { Box, Button, FormControl, Heading, Input } from '@chakra-ui/react'
 import type { NextPage } from 'next'
-import { useRouter } from 'next/router'
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 
 import { ErrorMessage } from '~/components/Text'
-import { signIn } from '~/feature/frontend/auth'
+import { useLogin } from '~/hooks/useLogin'
+
+type FormValues = {
+  email: string
+  password: string
+}
 
 const LoginPage: NextPage = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ mode: 'onChange' })
+  } = useForm<FormValues>({ mode: 'onChange' })
 
-  const toast = useToast()
-  const router = useRouter()
+  const { signIn } = useLogin()
 
-  const onSubmit: SubmitHandler<FieldValues> = async (values) => {
+  const onSubmit: SubmitHandler<FormValues> = async (values) => {
     const { email, password } = values
-
-    try {
-      if (typeof email !== 'string' || typeof password !== 'string')
-        throw new Error('型が違います')
-
-      const user = await signIn(email, password)
-
-      router.push('/')
-
-      toast({
-        title: `${user.email}でログインしました`,
-        status: 'success',
-        duration: 2000,
-        isClosable: true,
-      })
-    } catch (err) {
-      const errMassage =
-        err instanceof Error ? err.message : 'ログインに失敗しました'
-
-      toast({
-        title: errMassage,
-        status: 'error',
-        duration: 2000,
-        isClosable: true,
-      })
-    }
+    signIn(email, password)
   }
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl>
-          <Input
-            type="email"
-            placeholder="メールアドレス"
-            id="email"
-            {...register('email', {
-              required: {
-                value: true,
-                message: '何も入力されていません',
-              },
-            })}
-          />
-          {errors.email && (
-            <ErrorMessage>{errors.email.message?.toString()}</ErrorMessage>
-          )}
-
-          <Input
-            type="password"
-            placeholder="パスワード"
-            id="password"
-            {...register('password', {
-              required: {
-                value: true,
-                message: '何も入力されていません',
-              },
-            })}
-          />
-          {errors.password && (
-            <ErrorMessage>{errors.password.message?.toString()}</ErrorMessage>
-          )}
-        </FormControl>
-        <Button colorScheme="teal" type="submit">
+      <Box border="1px" m="10" p="10">
+        <Heading textAlign="center" pb="8">
           ログイン
-        </Button>
-      </form>
+        </Heading>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <FormControl>
+            <Input
+              type="email"
+              placeholder="メールアドレス"
+              id="email"
+              m="2"
+              {...register('email', {
+                required: {
+                  value: true,
+                  message: '何も入力されていません',
+                },
+              })}
+            />
+            {errors.email && (
+              <ErrorMessage>{errors.email.message?.toString()}</ErrorMessage>
+            )}
+
+            <Input
+              type="password"
+              placeholder="パスワード"
+              id="password"
+              m="2"
+              {...register('password', {
+                required: {
+                  value: true,
+                  message: '何も入力されていません',
+                },
+              })}
+            />
+            {errors.password && (
+              <ErrorMessage>{errors.password.message?.toString()}</ErrorMessage>
+            )}
+          </FormControl>
+          <Box textAlign="center">
+            <Button colorScheme="teal" type="submit">
+              ログイン
+            </Button>
+          </Box>
+        </form>
+      </Box>
     </>
   )
 }
